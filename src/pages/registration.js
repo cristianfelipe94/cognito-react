@@ -154,8 +154,6 @@ class Registration extends Component {
               </button>
             </div>
           </form>
-
-          <h2 style= {this.state.passwordmatch? accessConfirmedTitle : accessDeniedTitle}>Registered!</h2>
         </header>
       </div>
     );

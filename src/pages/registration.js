@@ -19,6 +19,7 @@ class Registration extends Component {
     };
 
     this.confirmationMatch = this.confirmationMatch.bind(this);
+    this.goToLogin = this.goToLogin.bind(this);
   }
 
   // This function will get an event with a value keystroke.
@@ -36,7 +37,7 @@ class Registration extends Component {
         this.setState({
             errorMessage: 'Password must have 6 characters with at least one capital letter, one number and a special character.'
         });
-      }else if (this.state.password !== this.state.confirmpassword) {
+      } else if (this.state.password !== this.state.confirmpassword) {
         this.setState({
             errorMessage: 'Password and confirmation password are incorrect. Make sure they are the same.'
         });
@@ -78,7 +79,12 @@ class Registration extends Component {
     }
   }
 
+  goToLogin() {
+    this.props.history.push('/welcome');
+  }
+
   render() {
+    console.log(this.props);
     const accessConfirmedTitle = {
       display: "block"
     };
@@ -108,11 +114,14 @@ class Registration extends Component {
     const submitInput = {
       border: 'none',
       height: '40px',
-      fontSize: '20px',
+      fontSize: '18px',
       color: 'white',
       margin: 'auto',
       backgroundColor: '#05a697',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      fontFamily: 'Roboto',
+      width: 'max-content',
+      padding: '10px'
     }
 
     const appTitles = {
@@ -125,9 +134,27 @@ class Registration extends Component {
         fontSize: '16px'
     }
 
+    const templateGrid = {
+      display: 'flex',
+      flexDirection: 'row'
+    }
+
+    const enterHome = {
+      border: 'none',
+      fontSize: '16px',
+      color: 'white',
+      margin: 'auto',
+      padding: '10px',
+      backgroundColor: 'rgb(59, 59, 59)',
+      fontFamily: 'Roboto',
+      width: 'max-content',
+      cursor: 'pointer'
+    }
+
     return (
       <div className="App">
-        <header className="App-header">
+        <header className="App-header" style= {templateGrid}>
+        <div>
           <div style= {appTitles}>
             <h1 style= {{fontWeight: '300'}}>
                 Átala
@@ -154,6 +181,13 @@ class Registration extends Component {
               </button>
             </div>
           </form>
+        </div>
+        <div>
+          <button onClick= {this.goToLogin} style= {enterHome}>
+            Ya soy usuario
+          </button>
+        </div>
+          
         </header>
       </div>
     );

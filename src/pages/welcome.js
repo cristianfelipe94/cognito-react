@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Auth from "aws-amplify";
+import {Auth} from "aws-amplify";
 import "../App.css";
 
 class Welcome extends Component {
@@ -7,44 +7,35 @@ class Welcome extends Component {
 		super(props);
 		this.state = {
 			username: "",
-			email: "",
 			password: "",
-			confirmpassword: "",
 
 			errorMessage: "",
-      passwordmatch: false,
-      isLooged: this.props.passTo
+			passwordmatch: false,
+			isLooged: {
+				logged: this.props.passTo.user,
+				username: ""
+			}
 		};
-
 		this.confirmationMatch = this.confirmationMatch.bind(this);
+		this.handleSubmitedInfo = this.handleSubmitedInfo.bind(this);
 	}
 
 	// This function will get an event with a value keystroke.
 	// Value Keystroke into State.
 	// Event will tell us in which state the input will be saved.
 	onInputInfo = event => {
-    console.log('Prop is: ',this.props.passTo);
+		console.log("Prop is: ", this.state);
 		this.setState({
 			[event.target.id]: event.target.value
 		});
 	};
 
 	confirmationMatch() {
-		if (
-			this.state.password !== "" &&
-			this.state.confirmpassword !== "" &&
-			this.state.username !== "" &&
-			this.state.email !== ""
-		) {
+		if (this.state.password !== "" && this.state.username !== "") {
 			if (this.state.password.length < 6) {
 				this.setState({
 					errorMessage:
 						"Password must have 6 characters with at least one capital letter, one number and a special character."
-				});
-			} else if (this.state.password !== this.state.confirmpassword) {
-				this.setState({
-					errorMessage:
-						"Password and confirmation password are incorrect. Make sure they are the same."
 				});
 			} else {
 				this.setState({
@@ -60,36 +51,31 @@ class Welcome extends Component {
 
 	handleSubmitedInfo = async event => {
 		event.preventDefault();
-
+		console.log(event, this.state);
 		if (this.state.passwordmatch) {
-			// Use destructure to get values from state.
-			const { username, email, password } = this.state;
-			try {
-				const signUpResponse = await Auth.login(
-					this.state.username,
-					this.state.password
-				);
-				console.log("Sign response: ", signUpResponse);
-				this.props.history.push("/home");
-			} catch (error) {
-				if (String(error.code) === "InvalidParameterException") {
-					this.setState({
-						errorMessage:
-							"Password must contain at leats 6 characters, one Capital letter, one number and a special character"
-					});
-				}
-			}
+			const {username, password} = this.state;
+			console.log(username, password);
+			Auth.signIn({
+				username, password
+			}).then(user => {
+				console.log(user)
+			}).catch(err => {
+				console.log(err.message);
+				this.setState({
+					errorMessage: err.message
+				})
+			});
 		}
 	};
 
 	render() {
 		const welcomeTitle = {
-			margin: "20px auto",
+			margin: "20px 0",
 			fontWeight: "300"
 		};
 
 		const confirmationAdvice = {
-			margin: "20px auto"
+			margin: "20px 0"
 		};
 
 		const accessConfirmedTitle = {
@@ -138,45 +124,90 @@ class Welcome extends Component {
 			fontSize: "16px"
 		};
 
-		return (
-			<div className="App">
-				<header className="App-header">
-					<h1 style={welcomeTitle}>
-						Welcome you are almost sign in, please check your email to confirm
-						your account.
-					</h1>
-					<p style={confirmationAdvice}>
-						If the confirmation email is not in your inbox, check your Spam
-						Folder.
-					</p>
-					<form onSubmit={this.handleSubmitedInfo} style={formBlock}>
-						<div style={formInputContainer}>
-							<input
-								type="text"
-								id="username"
-								placeholder="Enter username"
-								value={this.state.username}
-								onChange={this.onInputInfo}
-								className={"user-input"}
-							/>
-							<input
-								type="password"
-								id="password"
-								placeholder="Enter password"
-								value={this.state.password}
-								onChange={this.onInputInfo}
-								className={"user-input"}
-							/>
+		if (this.state.isLooged.logged !== null) {
+			return (
+				<div className="App">
+					<header className="App-header">
+						<h1 style={welcomeTitle}>
+							Hola, ya casi termina el proceso de registro
+						</h1>
+						<p style={confirmationAdvice}>
+							Acabamos de enviarte un correo de confirmación a tu correo
+							electrónico.
+						</p>
+						<div style= {errorMessageContainer}>
+							<p>{this.state.errorMessage}</p>
 						</div>
-						<div style={formSubmitContainer}>
-							<button onClick={this.confirmationMatch} style={submitInput}>
-								Registrarme
-							</button>
+						<form onSubmit={this.handleSubmitedInfo} style={formBlock}>
+							<div style={formInputContainer}>
+								<input
+									type="text"
+									id="username"
+									placeholder="Enter username"
+									value={this.state.username}
+									onChange={this.onInputInfo}
+									className={"user-input"}
+								/>
+								<input
+									type="password"
+									id="password"
+									placeholder="Enter password"
+									value={this.state.password}
+									onChange={this.onInputInfo}
+									className={"user-input"}
+								/>
+							</div>
+							<div style={formSubmitContainer}>
+								<button onClick={this.confirmationMatch} style={submitInput}>
+									Ingresar a Atala
+								</button>
+							</div>
+						</form>
+					</header>
+				</div>
+			);
+		} else {
+			return (
+				<div className="App">
+					<header className="App-header">
+						<h2 style={welcomeTitle}>
+							Hola que tal!
+						</h2>
+						<p style={confirmationAdvice}>
+							Te invitamos a abrir tu cuenta.
+						</p>
+						<div style= {errorMessageContainer}>
+							<p>{this.state.errorMessage}</p>
 						</div>
-					</form>
-				</header>
-			</div>
-		);
+						<form onSubmit={this.handleSubmitedInfo} style={formBlock}>
+							<div style={formInputContainer}>
+								<input
+									type="text"
+									id="username"
+									placeholder="Enter username"
+									value={this.state.username}
+									onChange={this.onInputInfo}
+									className={"user-input"}
+								/>
+								<input
+									type="password"
+									id="password"
+									placeholder="Enter password"
+									value={this.state.password}
+									onChange={this.onInputInfo}
+									className={"user-input"}
+								/>
+							</div>
+							<div style={formSubmitContainer}>
+								<button onClick={this.confirmationMatch} style={submitInput}>
+									Ingresar a Atala
+								</button>
+							</div>
+						</form>
+					</header>
+				</div>
+			);
+		}
 	}
 }
 

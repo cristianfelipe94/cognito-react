@@ -34,8 +34,8 @@ class App extends Component {
     return (
         <Router>
           <Switch>
-            <Route exact path="/" render={() => <Registration passTo={appProps}/>}/>
-            <Route exact path="/welcome" component={Welcome} />
+            <Route exact path="/" render={(props) => <Registration {...props} passTo={appProps}/>}/>
+            <Route exact path="/welcome" render={(props) => <Welcome {...props} passTo={appProps}/>}/>
             <Route exact path="/home" component={Home} />
           </Switch>
         </Router>

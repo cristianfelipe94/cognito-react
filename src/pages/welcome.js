@@ -12,7 +12,8 @@ class Welcome extends Component {
 			confirmpassword: "",
 
 			errorMessage: "",
-			passwordmatch: false
+      passwordmatch: false,
+      isLooged: this.props.passTo
 		};
 
 		this.confirmationMatch = this.confirmationMatch.bind(this);
@@ -22,6 +23,7 @@ class Welcome extends Component {
 	// Value Keystroke into State.
 	// Event will tell us in which state the input will be saved.
 	onInputInfo = event => {
+    console.log('Prop is: ',this.props.passTo);
 		this.setState({
 			[event.target.id]: event.target.value
 		});

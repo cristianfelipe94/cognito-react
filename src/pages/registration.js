@@ -16,19 +16,18 @@ class Registration extends Component {
 
       errorMessage: "",
       passwordmatch: false,
-      isLooged: this.props.passTo
+      isLooged: this.props.passTo.user
     };
 
     this.confirmationMatch = this.confirmationMatch.bind(this);
     this.goToLogin = this.goToLogin.bind(this);
-    this.renderProps = this.render.bind(this);
   }
 
   // This function will get an event with a value keystroke.
   // Value Keystroke into State.
   // Event will tell us in which state the input will be saved.
   onInputInfo = (event) => {
-    console.log(this.props.passTo);
+    console.log(this.props);
     this.setState({
       [event.target.id]: event.target.value
     });
@@ -49,7 +48,7 @@ class Registration extends Component {
             passwordmatch: true,
             isLooged: true
         }, () => {
-          this.props.appDefaultState(this.state.isLooged)
+          this.props.passTo.setAppDefaultState(this.state.isLooged)
         });
       }
     } else {
@@ -86,6 +85,7 @@ class Registration extends Component {
   }
 
   goToLogin() {
+    console.log("Try to change: ", this.props);
     this.props.history.push('/welcome');
   }
 

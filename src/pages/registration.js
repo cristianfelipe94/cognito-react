@@ -15,17 +15,20 @@ class Registration extends Component {
       confirmpassword: "",
 
       errorMessage: "",
-      passwordmatch: false
+      passwordmatch: false,
+      isLooged: this.props.passTo
     };
 
     this.confirmationMatch = this.confirmationMatch.bind(this);
     this.goToLogin = this.goToLogin.bind(this);
+    this.renderProps = this.render.bind(this);
   }
 
   // This function will get an event with a value keystroke.
   // Value Keystroke into State.
   // Event will tell us in which state the input will be saved.
   onInputInfo = (event) => {
+    console.log(this.props.passTo);
     this.setState({
       [event.target.id]: event.target.value
     });
@@ -43,7 +46,10 @@ class Registration extends Component {
         });
       } else {
         this.setState({
-            passwordmatch: true
+            passwordmatch: true,
+            isLooged: true
+        }, () => {
+          this.props.appDefaultState(this.state.isLooged)
         });
       }
     } else {
@@ -84,7 +90,6 @@ class Registration extends Component {
   }
 
   render() {
-    console.log(this.props);
     const accessConfirmedTitle = {
       display: "block"
     };

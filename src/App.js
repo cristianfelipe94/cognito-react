@@ -10,20 +10,35 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLogged: 'false'
-    }
+      user: null
+    };
+
+    this.appDefaultState= this.appDefaultState.bind(this);
   }
+
+  // State Setter Will update in all views.
+  appDefaultState(userLogged) {
+    this.setState({
+      user: userLogged
+    });
+  }
+
   render() {
+
+    // Create an object with the State and State Setter inside this component.
+    const appProps = {
+      user: this.state.user,
+      setAppDefaultState: this.appDefaultState
+    }
+    
     return (
-      <div className="App">
         <Router>
           <Switch>
-            <Route exact path="/" render={() => <Registration passTo={this.state.isLogged}/>}/>
+            <Route exact path="/" render={() => <Registration passTo={appProps}/>}/>
             <Route exact path="/welcome" component={Welcome} />
             <Route exact path="/home" component={Home} />
           </Switch>
         </Router>
-      </div>
     );
   }
 }

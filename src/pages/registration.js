@@ -85,7 +85,6 @@ class Registration extends Component {
   }
 
   goToLogin() {
-    console.log("Try to change: ", this.props);
     this.props.history.push('/welcome');
   }
 

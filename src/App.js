@@ -23,6 +23,16 @@ class App extends Component {
     });
   }
 
+  componentDidMount () {
+    const isLooged = JSON.parse(localStorage.getItem('UserSession'));
+    if (isLooged) {
+      console.log(this.state);
+      this.setState({
+        user: isLooged
+      });
+    }
+  }
+
   render() {
 
     // Create an object with the State and State Setter inside this component.
@@ -30,16 +40,28 @@ class App extends Component {
       user: this.state.user,
       setAppDefaultState: this.appDefaultState
     }
-    
-    return (
+
+    if(this.state.user) {
+      return(
+        <Router>
+          <Switch>
+            <Route exact path="/home" render={(props)=> <Home {...props} passTo={appProps}/>}/>
+            <Route exact path="/" render={(props) => <Home {...props} passTo={appProps}/>}/>
+            <Route exact path="/welcome" render={(props) => <Home {...props} passTo={appProps}/>}/>
+          </Switch>
+        </Router>
+      );
+    } else {
+      return (
         <Router>
           <Switch>
             <Route exact path="/" render={(props) => <Registration {...props} passTo={appProps}/>}/>
             <Route exact path="/welcome" render={(props) => <Welcome {...props} passTo={appProps}/>}/>
-            <Route exact path="/home" component={Home} />
+            <Route exact path="/home" render={(props)=> <Registration {...props} passTo={appProps}/>}/>
           </Switch>
         </Router>
-    );
+      );
+    };
   }
 }
 

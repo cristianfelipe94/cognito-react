@@ -1,15 +1,11 @@
-.App {
-  text-align: center;
-}
-
-.App-header {
+.app-layout{
   background: linear-gradient(to left,#05a697 25%, #3b3b3b 25%);
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: flex-start;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: 25px;
   color: white;
   padding: 40px 50px;
 }

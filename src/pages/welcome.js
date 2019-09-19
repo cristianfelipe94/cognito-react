@@ -1,5 +1,9 @@
 import React, { Component } from "react";
+
+// Auth is an object that has inside methods.
+// signIn, signOut Methods.
 import {Auth} from "aws-amplify";
+
 import "../App.css";
 
 class Welcome extends Component {
@@ -22,21 +26,22 @@ class Welcome extends Component {
 		this.goToSignUp = this.goToSignUp.bind(this);
 	}
 
-	// This function will get an event with a value keystroke.
-	// Value Keystroke into State.
-	// Event will tell us in which state the input will be saved.
+	// OnInputInfo:
+	// This function will get an event with the keystroke value.
+	// Keystroke values will be saved into State.
 	onInputInfo = event => {
 		this.setState({
 			[event.target.id]: event.target.value
 		});
 	};
 
+	// ConfirmationMatch:
+	//This function will make tests in the front before sending a request in the Back.
 	confirmationMatch() {
 		if (this.state.password !== "" && this.state.username !== "") {
 			if (this.state.password.length < 6) {
 				this.setState({
-					errorMessage:
-						"Password must have 6 characters with at least one capital letter, one number and a special character."
+					errorMessage: 'Por seguridad las contraseñas tienen que ser mayores de 6 caracteres, tener al menos un número, una letra mayúscula y un caracter especial.'
 				});
 			} else {
 				this.setState({
@@ -45,24 +50,28 @@ class Welcome extends Component {
 			}
 		} else {
 			this.setState({
-				errorMessage: "Please make sure to fill all the required fields."
+				errorMessage: "Asegúrese de completar todos los campos."
 			});
 		}
 	}
 
+	// GoToSignUp:
+	// This function will load a new page.
 	goToSignUp() {
 		this.props.history.push('/');
 	}	
 
+	// HandleSubmitedInfo:
+	// This function will Submit
 	handleSubmitedInfo = async event => {
 		event.preventDefault();
 		if (this.state.passwordmatch) {
 			const {username, password} = this.state;
-			console.log(username, password);
+			// console.log("Destructure state: ", username, password);
 			Auth.signIn({
 				username, password
 			}).then((user) => {
-				console.log(user);
+				// console.log("Response from Cognito: ", user);
 				this.setState({
 					errorMessage: "",
 					isLooged: {
@@ -70,13 +79,13 @@ class Welcome extends Component {
 						username: user
 					}
 				}, () => {
-					// console.log(this.state.isLooged);
+					// console.log("Save response into State: ", this.state);
 					this.props.passTo.setAppDefaultState(this.state.isLooged);
 					localStorage.setItem('UserSession', JSON.stringify(this.state));
 					this.props.history.push('/home');
 				});
 			}).catch(err => {
-				console.log(err.message);
+				// console.log("Response error: ",err.message);
 				this.setState({
 					errorMessage: err.message
 				})
@@ -108,11 +117,6 @@ class Welcome extends Component {
 			maxWidth: "90%"
 		};
 
-		const templateGrid = {
-			display: 'flex',
-			flexDirection: 'row'
-		};
-
 		const formInputContainer = {
 			border: "none",
 			width: "50%",
@@ -135,10 +139,6 @@ class Welcome extends Component {
 			cursor: "pointer"
 		};
 
-		const appTitles = {
-			maxWidth: "50%"
-		};
-
 		const errorMessageContainer = {
 			maxWidth: "50%",
 			color: "#ef3030",
@@ -157,102 +157,105 @@ class Welcome extends Component {
 			cursor: 'pointer'
 		}
 
+		// Check if user is looged.
+		// True or Something: Will render a page in which the user has started a Registration process.
+		// Null: Will render a page in which the user is new with no registration process and user info.
 		if (this.state.isLooged.logged !== null) {
 			return (
-				<div className="App">
-					<header className="App-header" style= {templateGrid}>
-						<div>
-							<h1 style={welcomeTitle}>
-								Hola, ya casi termina el proceso de registro
-							</h1>
-							<p style={confirmationAdvice}>
-								Acabamos de enviarte un correo de confirmación a tu correo
-								electrónico.
-							</p>
-							<div style= {errorMessageContainer}>
-								<p>{this.state.errorMessage}</p>
-							</div>
-							<form onSubmit={this.handleSubmitedInfo} style={formBlock}>
-								<div style={formInputContainer}>
-									<input
-										type="text"
-										id="username"
-										placeholder="Enter username"
-										value={this.state.username}
-										onChange={this.onInputInfo}
-										className={"user-input"}
-									/>
-									<input
-										type="password"
-										id="password"
-										placeholder="Enter password"
-										value={this.state.password}
-										onChange={this.onInputInfo}
-										className={"user-input"}
-									/>
-								</div>
-								<div style={formSubmitContainer}>
-									<button onClick={this.confirmationMatch} style={submitInput}>
-										Ingresar a Atala
-									</button>
-								</div>
-							</form>
+				<div className="app-layout">
+					<div>
+
+						<h1 style={welcomeTitle}>
+							Hola, ya casi termina el proceso de registro
+						</h1>
+						<p style={confirmationAdvice}>
+							Acabamos de enviarte un correo de confirmación a tu correo
+							electrónico.
+						</p>
+						<div style= {errorMessageContainer}>
+							<p>{this.state.errorMessage}</p>
 						</div>
-						
-						<div>
-							<button onClick= {this.goToSignUp} style= {enterWelcome}>
-								Ir al Registro
-							</button>
-        				</div>
-					</header>
+						<form onSubmit={this.handleSubmitedInfo} style={formBlock}>
+							<div style={formInputContainer}>
+								<input
+									type="text"
+									id="username"
+									placeholder="Nombre de usuario"
+									value={this.state.username}
+									onChange={this.onInputInfo}
+									className={"user-input"}
+								/>
+								<input
+									type="password"
+									id="password"
+									placeholder="Ingresar contraseña"
+									value={this.state.password}
+									onChange={this.onInputInfo}
+									className={"user-input"}
+								/>
+							</div>
+							<div style={formSubmitContainer}>
+								<button onClick={this.confirmationMatch} style={submitInput}>
+									Ingresar a Atala
+								</button>
+							</div>
+						</form>
+					</div>
+					
+					<div>
+						<button onClick= {this.goToSignUp} style= {enterWelcome}>
+							Ir al Registro
+						</button>
+					</div>
 				</div>
-			);
+				);
 		} else {
 			return (
-				<div className="App">
-					<header className="App-header" style= {templateGrid}>
-						<div>
-							<h2 style={welcomeTitle}>
-								Hola que tal!
-							</h2>
-							<p style={confirmationAdvice}>
-								Te invitamos a abrir tu cuenta.
-							</p>
-							<div style= {errorMessageContainer}>
-								<p>{this.state.errorMessage}</p>
-							</div>
-							<form onSubmit={this.handleSubmitedInfo} style={formBlock}>
-								<div style={formInputContainer}>
-									<input
-										type="text"
-										id="username"
-										placeholder="Enter username"
-										value={this.state.username}
-										onChange={this.onInputInfo}
-										className={"user-input"}
-									/>
-									<input
-										type="password"
-										id="password"
-										placeholder="Enter password"
-										value={this.state.password}
-										onChange={this.onInputInfo}
-										className={"user-input"}
-									/>
-								</div>
-								<div style={formSubmitContainer}>
-									<button onClick={this.confirmationMatch} style={submitInput}>
-										Ingresar a Atala
-									</button>
-								</div>
-							</form>
+				<div className="app-layout">
+					<div>
+						<h2 style={welcomeTitle}>
+							Hola que tal!
+						</h2>
+
+						<p style={confirmationAdvice}>
+							Te invitamos a abrir tu cuenta.
+						</p>
+
+						<div style= {errorMessageContainer}>
+							<p>{this.state.errorMessage}</p>
 						</div>
-						<div>
-							<button onClick= {this.goToSignUp} style= {enterWelcome}>
-								Ir al Registro
-							</button>
-        				</div>
-					</header>
+
+						<form onSubmit={this.handleSubmitedInfo} style={formBlock}>
+							<div style={formInputContainer}>
+								<input
+									type="text"
+									id="username"
+									placeholder="Nombre de usuario"
+									value={this.state.username}
+									onChange={this.onInputInfo}
+									className={"user-input"}
+								/>
+								<input
+									type="password"
+									id="password"
+									placeholder="Ingresar contraseña"
+									value={this.state.password}
+									onChange={this.onInputInfo}
+									className={"user-input"}
+								/>
+							</div>
+							<div style={formSubmitContainer}>
+								<button onClick={this.confirmationMatch} style={submitInput}>
+									Ingresar a Atala
+								</button>
+							</div>
+						</form>
+					</div>
+					<div>
+						<button onClick= {this.goToSignUp} style= {enterWelcome}>
+							Ir al Registro
+						</button>
+					</div>
 				</div>
 			);
 		}

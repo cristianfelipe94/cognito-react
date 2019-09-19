@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './App.css';
 
+// Import all pages.
 import Registration from './pages/registration';
 import Welcome from './pages/welcome';
 import Home from './pages/home';
@@ -16,33 +17,36 @@ class App extends Component {
     this.appDefaultState= this.appDefaultState.bind(this);
   }
 
-  // State Setter Will update in all views.
+  // AppDefaulState:
+  // This function will update state in every page.
   appDefaultState(userLogged) {
     this.setState({
       user: userLogged
     });
   }
 
+  // ComponentDidMount:
+  //  This function will get Data from LocalStorage.
   componentDidMount () {
     const isLogged = JSON.parse(localStorage.getItem('UserSession'));
     if (isLogged) {
-      console.log(this.state);
+      // console.log("Stored session: ", this.isLogged);
       this.setState({
         user: isLogged
-      }, () => {
-        // console.log("Is logged: ",this.state);
       });
     }
   }
 
   render() {
 
-    // Create an object with the State and State Setter inside this component.
+    // Create a prop that contains the State.
     const appProps = {
       user: this.state.user,
       setAppDefaultState: this.appDefaultState
     }
 
+    // Asks if there is a logged user.
+    // Renders based on state.
     if(this.state.user) {
       if(this.state.user.username) {
         return(

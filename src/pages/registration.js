@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import '../App.css';
 
-// Auth is an objects that has methods inside.
+// Auth is an object that has inside methods.
 // signIn, signOut Methods.
 import {Auth} from 'aws-amplify';
+
+import '../App.css';
 
 class Registration extends Component {
   constructor(props) {
@@ -23,25 +24,26 @@ class Registration extends Component {
     this.goToLogin = this.goToLogin.bind(this);
   }
 
-  // This function will get an event with a value keystroke.
-  // Value Keystroke into State.
-  // Event will tell us in which state the input will be saved.
+  // OnInputInfo:
+	// This function will get an event with the keystroke value.
+	// Keystroke values will be saved into State.
   onInputInfo = (event) => {
-    // console.log(this.props);
     this.setState({
       [event.target.id]: event.target.value
     });
   }
 
+  // ConfirmationMatch:
+	//This function will make tests in the front before sending a request in the Back.
   confirmationMatch () {
     if (this.state.password !== "" && this.state.confirmpassword !== "" && this.state.username !== "" && this.state.email !== "") {
       if (this.state.password.length < 6) {
         this.setState({
-            errorMessage: 'Password must have 6 characters with at least one capital letter, one number and a special character.'
+            errorMessage: 'Por seguridad las contraseñas tienen que ser mayores de 6 caracteres, tener al menos un número, una letra mayúscula y un caracter especial.'
         });
       } else if (this.state.password !== this.state.confirmpassword) {
         this.setState({
-            errorMessage: 'Password and confirmation password are incorrect. Make sure they are the same.'
+            errorMessage: 'La contraseña y la confirmación tienen que ser iguales. Asegúrese de estar ingresando la contraseña correcta.'
         });
       } else {
         this.setState({
@@ -51,11 +53,13 @@ class Registration extends Component {
       }
     } else {
         this.setState({
-            errorMessage: "Please make sure to fill all the required fields."
+            errorMessage: "Asegúrese de completar todos los campos."
         })
     }
   };
 
+  // HandleSubmitedInfo:
+	// This function will Submit
   handleSubmitedInfo = async event => {
     event.preventDefault();
 
@@ -69,11 +73,11 @@ class Registration extends Component {
           email: email
         }
       }).then((userCreated) => {
-        console.log("Sign response: ",userCreated);
-        this.props.passTo.setAppDefaultState(userCreated)
-        console.log(this.state);
+        // console.log("Cognito response: ", userCreated);
+        this.props.passTo.setAppDefaultState(userCreated);
         this.props.history.push('/welcome');
       }).catch((err) => {
+        // console.log("Cognito error: ", err);
         this.setState({
           errorMessage: err.message
         })
@@ -135,11 +139,6 @@ class Registration extends Component {
         fontSize: '16px'
     }
 
-    const templateGrid = {
-      display: 'flex',
-      flexDirection: 'row'
-    }
-
     const enterHome = {
       border: 'none',
       fontSize: '16px',
@@ -153,13 +152,13 @@ class Registration extends Component {
     }
 
     return (
-      <div className="App">
-        <header className="App-header" style= {templateGrid}>
+      <div className="app-layout">
         <div>
           <div style= {appTitles}>
             <h1 style= {{fontWeight: '300'}}>
                 Átala
             </h1>
+
             <h2 style= {{fontWeight: '300'}}>
                 Tus ideas deben ser comunicadas.
             </h2>
@@ -170,26 +169,29 @@ class Registration extends Component {
           </div>
 
           <form onSubmit= {this.handleSubmitedInfo} style= {formBlock}>
+
             <div style= {formInputContainer}>
-              <input type= "text" id= "email" placeholder= "Enter your email" value= {this.state.email} onChange= {this.onInputInfo} className= {'user-input'}/>
-              <input type= "text" id= "username" placeholder= "Enter username" value= {this.state.username} onChange= {this.onInputInfo} className= {'user-input'}/>
-              <input type= "password" id= "password" placeholder= "Enter password" value= {this.state.password} onChange= {this.onInputInfo}  className= {'user-input'}/>
-              <input type= "password" id= "confirmpassword" placeholder= "Confirm password" value= {this.state.confirmpassword} onChange= {this.onInputInfo}  className= {'user-input'}/>
+              <input type= "text" id= "email" placeholder= "atana-@-ejemplo.com" value= {this.state.email} onChange= {this.onInputInfo} className= {'user-input'}/>
+              <input type= "text" id= "username" placeholder= "Nombre de usuario" value= {this.state.username} onChange= {this.onInputInfo} className= {'user-input'}/>
+              <input type= "password" id= "password" placeholder= "Crear contraseña" value= {this.state.password} onChange= {this.onInputInfo}  className= {'user-input'}/>
+              <input type= "password" id= "confirmpassword" placeholder= "Confirmar contraseña" value= {this.state.confirmpassword} onChange= {this.onInputInfo}  className= {'user-input'}/>
             </div>
+
             <div style= {formSubmitContainer}>
               <button onClick= {this.confirmationMatch} style= {submitInput}>
                 Registrarme
               </button>
             </div>
+
           </form>
         </div>
+
         <div>
           <button onClick= {this.goToLogin} style= {enterHome}>
             Ya soy usuario
           </button>
         </div>
-        </header>
-      </div>
+    </div>
     );
   }
 }

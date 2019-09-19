@@ -24,11 +24,13 @@ class App extends Component {
   }
 
   componentDidMount () {
-    const isLooged = JSON.parse(localStorage.getItem('UserSession'));
-    if (isLooged) {
+    const isLogged = JSON.parse(localStorage.getItem('UserSession'));
+    if (isLogged) {
       console.log(this.state);
       this.setState({
-        user: isLooged
+        user: isLogged
+      }, () => {
+        // console.log("Is logged: ",this.state);
       });
     }
   }
@@ -42,15 +44,27 @@ class App extends Component {
     }
 
     if(this.state.user) {
-      return(
-        <Router>
-          <Switch>
-            <Route exact path="/home" render={(props)=> <Home {...props} passTo={appProps}/>}/>
-            <Route exact path="/" render={(props) => <Home {...props} passTo={appProps}/>}/>
-            <Route exact path="/welcome" render={(props) => <Home {...props} passTo={appProps}/>}/>
-          </Switch>
-        </Router>
-      );
+      if(this.state.user.username) {
+        return(
+          <Router>
+            <Switch>
+              <Route exact path="/home" render={(props)=> <Home {...props} passTo={appProps}/>}/>
+              <Route exact path="/" render={(props) => <Home {...props} passTo={appProps}/>}/>
+              <Route exact path="/welcome" render={(props) => <Home {...props} passTo={appProps}/>}/>
+            </Switch>
+          </Router>
+        );
+      } else {
+        return(
+          <Router>
+            <Switch>
+              <Route exact path="/home" render={(props)=> <Welcome {...props} passTo={appProps}/>}/>
+              <Route exact path="/" render={(props) => <Registration {...props} passTo={appProps}/>}/>
+              <Route exact path="/welcome" render={(props) => <Welcome {...props} passTo={appProps}/>}/>
+            </Switch>
+          </Router>
+        );
+      }
     } else {
       return (
         <Router>
@@ -63,6 +77,6 @@ class App extends Component {
       );
     };
   }
-}
+};
 
 export default App;

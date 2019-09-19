@@ -16,6 +16,7 @@ class Welcome extends Component {
 				user: ""
 			}
 		};
+
 		this.confirmationMatch = this.confirmationMatch.bind(this);
 		this.handleSubmitedInfo = this.handleSubmitedInfo.bind(this);
 		this.goToSignUp = this.goToSignUp.bind(this);
@@ -25,7 +26,6 @@ class Welcome extends Component {
 	// Value Keystroke into State.
 	// Event will tell us in which state the input will be saved.
 	onInputInfo = event => {
-		console.log("Prop is: ", this.state);
 		this.setState({
 			[event.target.id]: event.target.value
 		});
@@ -64,6 +64,7 @@ class Welcome extends Component {
 			}).then((user) => {
 				console.log(user);
 				this.setState({
+					errorMessage: "",
 					isLooged: {
 						logged: true,
 						username: user
@@ -71,7 +72,7 @@ class Welcome extends Component {
 				}, () => {
 					// console.log(this.state.isLooged);
 					this.props.passTo.setAppDefaultState(this.state.isLooged);
-					localStorage.setItem('UserSession', JSON.stringify(user));
+					localStorage.setItem('UserSession', JSON.stringify(this.state));
 					this.props.history.push('/home');
 				});
 			}).catch(err => {

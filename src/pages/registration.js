@@ -27,7 +27,7 @@ class Registration extends Component {
   // Value Keystroke into State.
   // Event will tell us in which state the input will be saved.
   onInputInfo = (event) => {
-    console.log(this.props);
+    // console.log(this.props);
     this.setState({
       [event.target.id]: event.target.value
     });
@@ -47,8 +47,6 @@ class Registration extends Component {
         this.setState({
             passwordmatch: true,
             isLooged: true
-        }, () => {
-          this.props.passTo.setAppDefaultState(this.state.isLooged)
         });
       }
     } else {
@@ -64,23 +62,22 @@ class Registration extends Component {
     if(this.state.passwordmatch) {
       // Use destructure to get values from state.
       const {username, email, password} = this.state;
-      try {
-        const signUpResponse = await Auth.signUp({
-          username,
-          password,
-          attributes: {
-            email: email
-          }
-        });
-        console.log("Sign response: ",signUpResponse)
-        this.props.history.push('/welcome');
-      }catch(error) {
-        if (String(error.code) === "InvalidParameterException") {
-            this.setState({
-                errorMessage: "Password must contain at leats 6 characters, one Capital letter, one number and a special character"
-            })
+      Auth.signUp({
+        username,
+        password,
+        attributes: {
+          email: email
         }
-      }
+      }).then((userCreated) => {
+        console.log("Sign response: ",userCreated);
+        this.props.passTo.setAppDefaultState(userCreated)
+        console.log(this.state);
+        this.props.history.push('/welcome');
+      }).catch((err) => {
+        this.setState({
+          errorMessage: err.message
+        })
+      });
     }
   }
 
@@ -191,7 +188,6 @@ class Registration extends Component {
             Ya soy usuario
           </button>
         </div>
-          
         </header>
       </div>
     );

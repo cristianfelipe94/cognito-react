@@ -190,7 +190,7 @@ class Welcome extends Component {
 							</div>
 							<div style={formSubmitContainer}>
 								<button onClick={this.confirmationMatch} style={submitInput}>
-									Ingresar a Atala
+									Ingresar a Atana
 								</button>
 							</div>
 						</form>
@@ -230,7 +230,7 @@ class Welcome extends Component {
 
 							<div style={formSubmitContainer}>
 								<button onClick={this.confirmationMatch} style={submitInput}>
-									Ingresar a Atala
+									Ingresar a Atana
 								</button>
 							</div>
 						</form>

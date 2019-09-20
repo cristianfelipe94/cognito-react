@@ -13,6 +13,7 @@ class Home extends Component{
 
         this.getStorage = this.getStorage.bind(this);
         this.handleSignOut = this.handleSignOut.bind(this);
+        this.goToPassword = this.goToPassword.bind(this);
     }
 
     // ComponentWillMount:
@@ -48,7 +49,12 @@ class Home extends Component{
         });
     }
 
+    goToPassword() {
+        this.props.history.push('/security');
+    }
+
     render() {
+        console.log("Global state: ",this.props);
 
         const username = {
             color: '#05a697'
@@ -60,16 +66,17 @@ class Home extends Component{
             display: 'flex'
         }
 
-        const logOut = {
+        const navigationTab = {
             border: 'none',
             fontSize: '16px',
             color: 'white',
-            margin: 'auto',
+            margin: '10px auto',
             padding: '10px',
             backgroundColor: 'rgb(59, 59, 59)',
             fontFamily: 'Roboto',
             width: 'max-content',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            display: 'block'
         }
 
         return (
@@ -78,8 +85,12 @@ class Home extends Component{
                     Hola <span style= {username}>{this.state.isUserLogged ? this.state.username : this.forceUpdate()}</span>
                 </h1>
                 <div>
-                    <button onClick= {this.handleSignOut} style= {logOut}>
+                    <button onClick= {this.handleSignOut} style= {navigationTab}>
                         Salir de la aplicación
+                    </button>
+
+                    <button onClick= {this.goToPassword} style= {navigationTab}>
+                        Cambiar de contraseña
                     </button>
                 </div>
             </div>

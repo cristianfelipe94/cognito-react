@@ -90,14 +90,6 @@ class Registration extends Component {
   }
 
   render() {
-    const accessConfirmedTitle = {
-      display: "block"
-    };
-
-    const accessDeniedTitle = {
-      display: "none"
-    };
-
     const formBlock = {
       display: 'flex',
       flexDirection: 'column',

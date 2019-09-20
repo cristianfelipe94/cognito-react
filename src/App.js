@@ -6,6 +6,7 @@ import './App.css';
 import Registration from './pages/registration';
 import Welcome from './pages/welcome';
 import Home from './pages/home';
+import Security from './pages/security';
 
 class App extends Component {
   constructor(props) {
@@ -55,6 +56,7 @@ class App extends Component {
               <Route exact path="/home" render={(props)=> <Home {...props} passTo={appProps}/>}/>
               <Route exact path="/" render={(props) => <Home {...props} passTo={appProps}/>}/>
               <Route exact path="/welcome" render={(props) => <Home {...props} passTo={appProps}/>}/>
+              <Route exact path="/security" render={(props) => <Security {...props} passTo={appProps}/>}/>
             </Switch>
           </Router>
         );
@@ -65,6 +67,7 @@ class App extends Component {
               <Route exact path="/home" render={(props)=> <Welcome {...props} passTo={appProps}/>}/>
               <Route exact path="/" render={(props) => <Registration {...props} passTo={appProps}/>}/>
               <Route exact path="/welcome" render={(props) => <Welcome {...props} passTo={appProps}/>}/>
+              <Route exact path="/security" render={(props) => <Welcome {...props} passTo={appProps}/>}/>
             </Switch>
           </Router>
         );
@@ -76,6 +79,7 @@ class App extends Component {
             <Route exact path="/" render={(props) => <Registration {...props} passTo={appProps}/>}/>
             <Route exact path="/welcome" render={(props) => <Welcome {...props} passTo={appProps}/>}/>
             <Route exact path="/home" render={(props)=> <Registration {...props} passTo={appProps}/>}/>
+            <Route exact path="/security" render={(props) => <Registration {...props} passTo={appProps}/>}/>
           </Switch>
         </Router>
       );

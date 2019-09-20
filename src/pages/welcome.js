@@ -99,6 +99,10 @@ class Welcome extends Component {
 			fontWeight: "300"
 		};
 
+		const layoutBlock = {
+			width: '80%'
+		}
+
 		const confirmationAdvice = {
 			margin: "20px 0"
 		};
@@ -113,14 +117,15 @@ class Welcome extends Component {
 
 		const formBlock = {
 			display: "flex",
-			flexDirection: "row",
+			flexDirection: "column",
 			maxWidth: "90%"
 		};
 
 		const formInputContainer = {
 			border: "none",
 			width: "50%",
-			display: "inline-block"
+			display: "inline-block",
+			padding: '30px 0 15px'
 		};
 
 		const formSubmitContainer = {
@@ -133,7 +138,7 @@ class Welcome extends Component {
 			border: "none",
 			height: "40px",
 			fontSize: "20px",
-			color: "white",
+			color: '#3b3b3b',
 			margin: "auto",
 			backgroundColor: "#05a697",
 			cursor: "pointer"
@@ -163,7 +168,7 @@ class Welcome extends Component {
 		if (this.state.isLooged.logged !== null) {
 			return (
 				<div className="app-layout">
-					<div>
+					<div style= {layoutBlock}>
 
 						<h1 style={welcomeTitle}>
 							Hola, ya casi termina el proceso de registro
@@ -176,23 +181,12 @@ class Welcome extends Component {
 							<p>{this.state.errorMessage}</p>
 						</div>
 						<form onSubmit={this.handleSubmitedInfo} style={formBlock}>
-							<div style={formInputContainer}>
-								<input
-									type="text"
-									id="username"
-									placeholder="Nombre de usuario"
-									value={this.state.username}
-									onChange={this.onInputInfo}
-									className={"user-input"}
-								/>
-								<input
-									type="password"
-									id="password"
-									placeholder="Ingresar contraseña"
-									value={this.state.password}
-									onChange={this.onInputInfo}
-									className={"user-input"}
-								/>
+						<div style={formInputContainer}>
+								<label htmlFor= "username">Ingrese su nombre de usuario</label>
+								<input type= "text" id= "username" placeholder= "Nombre de usuario" value= {this.state.username} onChange= {this.onInputInfo} className= {'user-input'}/>
+									
+								<label htmlFor= "password">Ingresar contraseña</label>
+								<input type= "password" id= "password" placeholder= "Contraseña" value= {this.state.password} onChange= {this.onInputInfo}  className= {'user-input'}/>
 							</div>
 							<div style={formSubmitContainer}>
 								<button onClick={this.confirmationMatch} style={submitInput}>
@@ -212,13 +206,13 @@ class Welcome extends Component {
 		} else {
 			return (
 				<div className="app-layout">
-					<div>
+					<div style= {layoutBlock}>
 						<h2 style={welcomeTitle}>
-							Hola que tal!
+							Ingreso
 						</h2>
 
 						<p style={confirmationAdvice}>
-							Te invitamos a abrir tu cuenta.
+							Te invitamos a abrir tu perfil.
 						</p>
 
 						<div style= {errorMessageContainer}>
@@ -227,23 +221,13 @@ class Welcome extends Component {
 
 						<form onSubmit={this.handleSubmitedInfo} style={formBlock}>
 							<div style={formInputContainer}>
-								<input
-									type="text"
-									id="username"
-									placeholder="Nombre de usuario"
-									value={this.state.username}
-									onChange={this.onInputInfo}
-									className={"user-input"}
-								/>
-								<input
-									type="password"
-									id="password"
-									placeholder="Ingresar contraseña"
-									value={this.state.password}
-									onChange={this.onInputInfo}
-									className={"user-input"}
-								/>
+								<label htmlFor= "username">Ingrese su nombre de usuario</label>
+								<input type= "text" id= "username" placeholder= "Nombre de usuario" value= {this.state.username} onChange= {this.onInputInfo} className= {'user-input'}/>
+									
+								<label htmlFor= "password">Ingresar contraseña</label>
+								<input type= "password" id= "password" placeholder= "Contraseña" value= {this.state.password} onChange= {this.onInputInfo}  className= {'user-input'}/>
 							</div>
+
 							<div style={formSubmitContainer}>
 								<button onClick={this.confirmationMatch} style={submitInput}>
 									Ingresar a Atala

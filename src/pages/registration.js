@@ -100,14 +100,15 @@ class Registration extends Component {
 
     const formBlock = {
       display: 'flex',
-      flexDirection: 'row',
+      flexDirection: 'column',
       maxWidth: '90%'
     };
 
     const formInputContainer = {
       border: 'none',
       width: '50%',
-      display: 'inline-block'
+      display: 'inline-block',
+      padding: '30px 0 15px'
     }
 
     const formSubmitContainer = {
@@ -120,7 +121,7 @@ class Registration extends Component {
       border: 'none',
       height: '40px',
       fontSize: '18px',
-      color: 'white',
+      color: '#3b3b3b',
       margin: 'auto',
       backgroundColor: '#05a697',
       cursor: 'pointer',
@@ -130,7 +131,7 @@ class Registration extends Component {
     }
 
     const appTitles = {
-      maxWidth: '50%'
+      maxWidth: '80%'
     }
 
     const errorMessageContainer = {
@@ -156,7 +157,7 @@ class Registration extends Component {
         <div>
           <div style= {appTitles}>
             <h1 style= {{fontWeight: '300'}}>
-                Átala
+                Atana
             </h1>
 
             <h2 style= {{fontWeight: '300'}}>
@@ -171,9 +172,16 @@ class Registration extends Component {
           <form onSubmit= {this.handleSubmitedInfo} style= {formBlock}>
 
             <div style= {formInputContainer}>
+              <label htmlFor= "email">Ingrese su correo</label>
               <input type= "text" id= "email" placeholder= "atana-@-ejemplo.com" value= {this.state.email} onChange= {this.onInputInfo} className= {'user-input'}/>
+              
+              <label htmlFor= "username">Ingrese su nombre de usuario</label>
               <input type= "text" id= "username" placeholder= "Nombre de usuario" value= {this.state.username} onChange= {this.onInputInfo} className= {'user-input'}/>
-              <input type= "password" id= "password" placeholder= "Crear contraseña" value= {this.state.password} onChange= {this.onInputInfo}  className= {'user-input'}/>
+              
+              <label htmlFor= "email">Crear contraseña</label>
+              <input type= "password" id= "password" placeholder= "Nueva contraseña" value= {this.state.password} onChange= {this.onInputInfo}  className= {'user-input'}/>
+              
+              <label htmlFor= "email">Confirme su contraseña</label>
               <input type= "password" id= "confirmpassword" placeholder= "Confirmar contraseña" value= {this.state.confirmpassword} onChange= {this.onInputInfo}  className= {'user-input'}/>
             </div>
 

@@ -181,7 +181,7 @@ class Welcome extends Component {
 							<p>{this.state.errorMessage}</p>
 						</div>
 						<form onSubmit={this.handleSubmitedInfo} style={formBlock}>
-						<div style={formInputContainer}>
+							<div style={formInputContainer}>
 								<label htmlFor= "username">Ingrese su nombre de usuario</label>
 								<input type= "text" id= "username" placeholder= "Nombre de usuario" value= {this.state.username} onChange= {this.onInputInfo} className= {'user-input'}/>
 									

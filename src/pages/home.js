@@ -50,11 +50,10 @@ class Home extends Component{
     }
 
     goToPassword() {
-        this.props.history.push('/security');
+        this.props.history.push('/forgotpassword');
     }
 
     render() {
-        console.log("Global state: ",this.props);
 
         const username = {
             color: '#05a697'
@@ -90,7 +89,7 @@ class Home extends Component{
                     </button>
 
                     <button onClick= {this.goToPassword} style= {navigationTab}>
-                        Cambiar de contraseña
+                        Olvidé la contraseña
                     </button>
                 </div>
             </div>

@@ -4,55 +4,59 @@ import React, { Component } from "react";
 // signIn, signOut Methods.
 import {Auth} from "aws-amplify";
 
+import Form from "../components/Form";
+
 import "../App.css";
 
 class Welcome extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			username: "",
-			password: "",
-			errorMessage: "",
-			passwordmatch: false,
+			// username: "",
+			// password: "",
+			// errorMessage: "",
+			// passwordmatch: false,
+
+			formType: "signIn",
 			isLooged: {
 				logged: this.props.passTo.user,
 				user: ""
 			}
 		};
 
-		this.confirmationMatch = this.confirmationMatch.bind(this);
-		this.handleSubmitedInfo = this.handleSubmitedInfo.bind(this);
+		// this.confirmationMatch = this.confirmationMatch.bind(this);
+		// this.handleSubmitedInfo = this.handleSubmitedInfo.bind(this);
 		this.goToSignUp = this.goToSignUp.bind(this);
 	}
 
 	// OnInputInfo:
 	// This function will get an event with the keystroke value.
 	// Keystroke values will be saved into State.
-	onInputInfo = event => {
-		this.setState({
-			[event.target.id]: event.target.value
-		});
-	};
+	// onInputInfo = event => {
+	// 	this.setState({
+	// 		[event.target.id]: event.target.value
+	// 	});
+	// };
 
 	// ConfirmationMatch:
 	//This function will make tests in the front before sending a request in the Back.
-	confirmationMatch() {
-		if (this.state.password !== "" && this.state.username !== "") {
-			if (this.state.password.length < 6) {
-				this.setState({
-					errorMessage: 'Por seguridad las contraseñas tienen que ser mayores de 6 caracteres, tener al menos un número, una letra mayúscula y un caracter especial.'
-				});
-			} else {
-				this.setState({
-					passwordmatch: true
-				});
-			}
-		} else {
-			this.setState({
-				errorMessage: "Asegúrese de completar todos los campos."
-			});
-		}
-	}
+	// confirmationMatch() {
+	// 	if (this.state.password !== "" && this.state.username !== "") {
+	// 		if (this.state.password.length < 6) {
+	// 			this.setState({
+	// 				errorMessage: 'Por seguridad las contraseñas tienen que ser mayores de 6 caracteres, tener al menos un número, una letra mayúscula y un caracter especial.'
+	// 			});
+	// 		} else {
+	// 			this.setState({
+	// 				passwordmatch: true
+	// 			});
+	// 		}
+	// 	} else {
+	// 		this.setState({
+	// 			errorMessage: "Asegúrese de completar todos los campos."
+	// 		});
+	// 	}
+	// }
 
 	// GoToSignUp:
 	// This function will load a new page.
@@ -62,40 +66,41 @@ class Welcome extends Component {
 
 	// HandleSubmitedInfo:
 	// This function will Submit
-	handleSubmitedInfo = async event => {
-		event.preventDefault();
-		if (this.state.passwordmatch) {
-			const {username, password} = this.state;
-			// console.log("Destructure state: ", username, password);
+	// handleSubmitedInfo = async event => {
+	// 	event.preventDefault();
+	// 	if (this.state.passwordmatch) {
+	// 		const {username, password} = this.state;
+	// 		// console.log("Destructure state: ", username, password);
 
-			// Auth.signIn:
-			// This is a method inside Auth, that takes Username and Password.
-			Auth.signIn({
-				username, password
-			}).then((user) => {
-				// console.log("Response from Cognito: ", user);
-				this.setState({
-					errorMessage: "",
-					isLooged: {
-						logged: true,
-						username: user
-					}
-				}, () => {
-					// console.log("Save response into State: ", this.state);
-					this.props.passTo.setAppDefaultState(this.state.isLooged);
-					localStorage.setItem('UserSession', JSON.stringify(this.state));
-					this.props.history.push('/home');
-				});
-			}).catch(err => {
-				// console.log("Response error: ",err.message);
-				this.setState({
-					errorMessage: err.message
-				})
-			});
-		}
-	};
+	// 		// Auth.signIn:
+	// 		// This is a method inside Auth, that takes Username and Password.
+	// 		Auth.signIn({
+	// 			username, password
+	// 		}).then((user) => {
+	// 			// console.log("Response from Cognito: ", user);
+	// 			this.setState({
+	// 				errorMessage: "",
+	// 				isLooged: {
+	// 					logged: true,
+	// 					username: user
+	// 				}
+	// 			}, () => {
+	// 				// console.log("Save response into State: ", this.state);
+	// 				this.props.passTo.setAppDefaultState(this.state.isLooged);
+	// 				localStorage.setItem('UserSession', JSON.stringify(this.state));
+	// 				this.props.history.push('/home');
+	// 			});
+	// 		}).catch(err => {
+	// 			// console.log("Response error: ",err.message);
+	// 			this.setState({
+	// 				errorMessage: err.message
+	// 			})
+	// 		});
+	// 	}
+	// };
 
 	render() {
+		console.log(this.props.passTo.logged);
 		const welcomeTitle = {
 			margin: "20px 0",
 			fontWeight: "300"
@@ -171,7 +176,7 @@ class Welcome extends Component {
 							Acabamos de enviarte un correo de confirmación a tu correo
 							electrónico.
 						</p>
-						<div style= {errorMessageContainer}>
+						{/* <div style= {errorMessageContainer}>
 							<p>{this.state.errorMessage}</p>
 						</div>
 						<form onSubmit={this.handleSubmitedInfo} style={formBlock}>
@@ -191,7 +196,8 @@ class Welcome extends Component {
 									Ingresar a Atana
 								</button>
 							</div>
-						</form>
+						</form> */}
+						<Form {...this.props} type= {this.state.formType}/>
 					</div>
 					
 					<div>
@@ -213,7 +219,7 @@ class Welcome extends Component {
 							Te invitamos a abrir tu perfil.
 						</p>
 
-						<div style= {errorMessageContainer}>
+						{/* <div style= {errorMessageContainer}>
 							<p>{this.state.errorMessage}</p>
 						</div>
 
@@ -235,7 +241,8 @@ class Welcome extends Component {
 									Ingresar a Atana
 								</button>
 							</div>
-						</form>
+						</form> */}
+					<Form {...this.props} type= {this.state.formType}/>
 					</div>
 					<div>
 						<button onClick= {this.goToSignUp} style= {enterWelcome}>

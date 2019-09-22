@@ -4,97 +4,100 @@ import React, { Component } from "react";
 // signIn, signOut Methods.
 import { Auth } from "aws-amplify";
 
+import Form from "../components/Form";
+
 import "../App.css";
 
 class Registration extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			username: "",
-			email: "",
-			password: "",
-			confirmpassword: "",
-			errorMessage: "",
-			passwordmatch: false,
-			isLooged: this.props.passTo.user
+			// username: "",
+			// email: "",
+			// password: "",
+			// confirmpassword: "",
+			// errorMessage: "",
+			// passwordmatch: false,
+      isLooged: this.props.passTo.user,
+      formType: "signUp"
 		};
 
-		this.confirmationMatch = this.confirmationMatch.bind(this);
+		// this.confirmationMatch = this.confirmationMatch.bind(this);
 		this.goToLogin = this.goToLogin.bind(this);
 	}
 
 	// OnInputInfo:
 	// This function will get an event with the keystroke value.
 	// Keystroke values will be saved into State.
-	onInputInfo = event => {
-		this.setState({
-			[event.target.id]: event.target.value
-		});
-	};
+	// onInputInfo = event => {
+	// 	this.setState({
+	// 		[event.target.id]: event.target.value
+	// 	});
+	// };
 
 	// ConfirmationMatch:
 	//This function will make tests in the front before sending a request in the Back.
-	confirmationMatch() {
-		if (
-			this.state.password !== "" &&
-			this.state.confirmpassword !== "" &&
-			this.state.username !== "" &&
-			this.state.email !== ""
-		) {
-			if (this.state.password.length < 6) {
-				this.setState({
-					errorMessage:
-						"Por seguridad las contraseñas tienen que ser mayores de 6 caracteres, tener al menos un número, una letra mayúscula y un caracter especial."
-				});
-			} else if (this.state.password !== this.state.confirmpassword) {
-				this.setState({
-					errorMessage:
-						"La contraseña y la confirmación tienen que ser iguales. Asegúrese de estar ingresando la contraseña correcta."
-				});
-			} else {
-				this.setState({
-					passwordmatch: true,
-					isLooged: true
-				});
-			}
-		} else {
-			this.setState({
-				errorMessage: "Asegúrese de completar todos los campos."
-			});
-		}
-	}
+	// confirmationMatch() {
+	// 	if (
+	// 		this.state.password !== "" &&
+	// 		this.state.confirmpassword !== "" &&
+	// 		this.state.username !== "" &&
+	// 		this.state.email !== ""
+	// 	) {
+	// 		if (this.state.password.length < 6) {
+	// 			this.setState({
+	// 				errorMessage:
+	// 					"Por seguridad las contraseñas tienen que ser mayores de 6 caracteres, tener al menos un número, una letra mayúscula y un caracter especial."
+	// 			});
+	// 		} else if (this.state.password !== this.state.confirmpassword) {
+	// 			this.setState({
+	// 				errorMessage:
+	// 					"La contraseña y la confirmación tienen que ser iguales. Asegúrese de estar ingresando la contraseña correcta."
+	// 			});
+	// 		} else {
+	// 			this.setState({
+	// 				passwordmatch: true,
+	// 				isLooged: true
+	// 			});
+	// 		}
+	// 	} else {
+	// 		this.setState({
+	// 			errorMessage: "Asegúrese de completar todos los campos."
+	// 		});
+	// 	}
+	// }
 
 	// HandleSubmitedInfo:
 	// This function will Submit
-	handleSubmitedInfo = async event => {
-		event.preventDefault();
+	// handleSubmitedInfo = async event => {
+	// 	event.preventDefault();
 
-		if (this.state.passwordmatch) {
-			// Use destructure to get values from state.
-			const { username, email, password } = this.state;
+	// 	if (this.state.passwordmatch) {
+	// 		// Use destructure to get values from state.
+	// 		const { username, email, password } = this.state;
 
-			// Auth.signUp:
-			// This is a method inside Auth, that takes Username, Password and email attributes.
-			Auth.signUp({
-				username,
-				password,
-				attributes: {
-					email: email
-				}
-			})
-				.then(userCreated => {
-					// console.log("Cognito response: ", userCreated);
-					this.props.passTo.setAppDefaultState(userCreated);
-					this.props.history.push("/welcome");
-				})
-				.catch(err => {
-					// console.log("Cognito error: ", err);
-					this.setState({
-						errorMessage: err.message
-					});
-				});
-		}
-	};
+	// 		// Auth.signUp:
+	// 		// This is a method inside Auth, that takes Username, Password and email attributes.
+	// 		Auth.signUp({
+	// 			username,
+	// 			password,
+	// 			attributes: {
+	// 				email: email
+	// 			}
+	// 		})
+	// 			.then(userCreated => {
+	// 				// console.log("Cognito response: ", userCreated);
+	// 				this.props.passTo.setAppDefaultState(userCreated);
+	// 				this.props.history.push("/welcome");
+	// 			})
+	// 			.catch(err => {
+	// 				// console.log("Cognito error: ", err);
+	// 				this.setState({
+	// 					errorMessage: err.message
+	// 				});
+	// 			});
+	// 	}
+	// };
 
 	// GoToLogin:
 	// This function will take the user to the Register page.
@@ -168,10 +171,10 @@ class Registration extends Component {
 						</h2>
 					</div>
 
-					<div style={errorMessageContainer}>
+					{/* <div style={errorMessageContainer}>
 						<p>{this.state.errorMessage}</p>
-					</div>
-
+					</div> */}
+{/* 
 					<form onSubmit={this.handleSubmitedInfo} style={formBlock}>
 						<div style={formInputContainer}>
 							<label htmlFor="email">Ingrese su correo</label>
@@ -184,7 +187,9 @@ class Registration extends Component {
 								className={"user-input"}
 							/>
 
-							<label htmlFor="username">Ingrese su nombre de usuario</label>
+							<label htmlFor="username">
+                Ingrese su nombre de usuario
+              </label>
 							<input
 								type="text"
 								id="username"
@@ -194,7 +199,9 @@ class Registration extends Component {
 								className={"user-input"}
 							/>
 
-							<label htmlFor="email">Crear contraseña</label>
+							<label htmlFor="email">
+                Crear contraseña
+              </label>
 							<input
 								type="password"
 								id="password"
@@ -204,7 +211,9 @@ class Registration extends Component {
 								className={"user-input"}
 							/>
 
-							<label htmlFor="email">Confirme su contraseña</label>
+							<label htmlFor="email">
+                Confirme su contraseña
+              </label>
 							<input
 								type="password"
 								id="confirmpassword"
@@ -220,7 +229,8 @@ class Registration extends Component {
 								Registrarme
 							</button>
 						</div>
-					</form>
+          </form> */}
+          <Form {...this.props} type= {this.state.formType}/>
 				</div>
 
 				<div>

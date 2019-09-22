@@ -4,68 +4,71 @@ import React, { Component } from "react";
 // signIn, signOut Methods.
 import { Auth } from "aws-amplify";
 
+import Form from "../components/Form";
+
 import "../App.css";
 
 class ForgotPassword extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			email: "",
-            errorMessage: "",
-            validated: false,
+			formType: "forgotPassword",
+			// email: "",
+            // errorMessage: "",
+            // validated: false,
 			isLooged: this.props.passTo.user
 		};
 
-		this.confirmationMatch = this.confirmationMatch.bind(this);
+		// this.confirmationMatch = this.confirmationMatch.bind(this);
         this.goToHome = this.goToHome.bind(this);
 	}
 
 	// OnInputInfo:
 	// This function will get an event with the keystroke value.
 	// Keystroke values will be saved into State.
-	onInputInfo = event => {
-		this.setState({
-			[event.target.id]: event.target.value
-		});
-	};
+	// onInputInfo = event => {
+	// 	this.setState({
+	// 		[event.target.id]: event.target.value
+	// 	});
+	// };
 
-	// ConfirmationMatch:
-	//This function will make tests in the front before sending a request in the Back.
-	confirmationMatch() {
-		if (this.state.email !== "") {
-			this.setState({
-                validated: true
-            });
-		} else {
-			this.setState({
-				errorMessage: "Asegúrese de completar todos los campos."
-			});
-		}
-	}
+	// // ConfirmationMatch:
+	// //This function will make tests in the front before sending a request in the Back.
+	// confirmationMatch() {
+	// 	if (this.state.email !== "") {
+	// 		this.setState({
+    //             validated: true
+    //         });
+	// 	} else {
+	// 		this.setState({
+	// 			errorMessage: "Asegúrese de completar todos los campos."
+	// 		});
+	// 	}
+	// }
 
-	// HandleSubmitedInfo:
-	// This function will Submit a Amplify process
-	handleSubmitedInfo = async event => {
-		event.preventDefault();
+	// // HandleSubmitedInfo:
+	// // This function will Submit a Amplify process
+	// handleSubmitedInfo = async event => {
+	// 	event.preventDefault();
 
-		if (this.state.validated) {
-			// Use destructure to get values from state.
-			const { email} = this.state;
+	// 	if (this.state.validated) {
+	// 		// Use destructure to get values from state.
+	// 		const { email} = this.state;
 
-			// Auth.forgotPassword:
-			// This is a method inside Auth that takes one value (email).
-			Auth.forgotPassword(email)
-				.then((data) => {
-					this.props.history.push("/verificationcode");
-				})
-				.catch((err) => {
-					// console.log("Cognito error: ", err);
-					this.setState({
-						errorMessage: err.message
-					});
-				});
-		}
-	};
+	// 		// Auth.forgotPassword:
+	// 		// This is a method inside Auth that takes one value (email).
+	// 		Auth.forgotPassword(email)
+	// 			.then((data) => {
+	// 				this.props.history.push("/verificationcode");
+	// 			})
+	// 			.catch((err) => {
+	// 				// console.log("Cognito error: ", err);
+	// 				this.setState({
+	// 					errorMessage: err.message
+	// 				});
+	// 			});
+	// 	}
+	// };
 
 	// GoToHome:
 	// This function will take the user to the Home page.
@@ -143,7 +146,7 @@ class ForgotPassword extends Component {
 						<p>{this.state.errorMessage}</p>
 					</div>
 
-					<form onSubmit={this.handleSubmitedInfo} style={formBlock}>
+					{/* <form onSubmit={this.handleSubmitedInfo} style={formBlock}>
 						<div style={formInputContainer}>
 							<label htmlFor="email">Ingrese su correo</label>
 							<input
@@ -161,7 +164,8 @@ class ForgotPassword extends Component {
 								Generar código
 							</button>
 						</div>
-					</form>
+					</form> */}
+					<Form {...this.props} type= {this.state.formType}/>
 				</div>
 
 				<div>

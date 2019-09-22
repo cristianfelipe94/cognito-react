@@ -12,7 +12,6 @@ class Welcome extends Component {
 		this.state = {
 			username: "",
 			password: "",
-
 			errorMessage: "",
 			passwordmatch: false,
 			isLooged: {
@@ -68,6 +67,9 @@ class Welcome extends Component {
 		if (this.state.passwordmatch) {
 			const {username, password} = this.state;
 			// console.log("Destructure state: ", username, password);
+
+			// Auth.signIn:
+			// This is a method inside Auth, that takes Username and Password.
 			Auth.signIn({
 				username, password
 			}).then((user) => {
@@ -105,14 +107,6 @@ class Welcome extends Component {
 
 		const confirmationAdvice = {
 			margin: "20px 0"
-		};
-
-		const accessConfirmedTitle = {
-			display: "block"
-		};
-
-		const accessDeniedTitle = {
-			display: "none"
 		};
 
 		const formBlock = {
@@ -182,10 +176,14 @@ class Welcome extends Component {
 						</div>
 						<form onSubmit={this.handleSubmitedInfo} style={formBlock}>
 							<div style={formInputContainer}>
-								<label htmlFor= "username">Ingrese su nombre de usuario</label>
+								<label htmlFor= "username">
+									Ingrese su nombre de usuario
+								</label>
 								<input type= "text" id= "username" placeholder= "Nombre de usuario" value= {this.state.username} onChange= {this.onInputInfo} className= {'user-input'}/>
 									
-								<label htmlFor= "password">Ingresar contraseña</label>
+								<label htmlFor= "password">
+									Ingresar contraseña
+								</label>
 								<input type= "password" id= "password" placeholder= "Contraseña" value= {this.state.password} onChange= {this.onInputInfo}  className= {'user-input'}/>
 							</div>
 							<div style={formSubmitContainer}>
@@ -221,10 +219,14 @@ class Welcome extends Component {
 
 						<form onSubmit={this.handleSubmitedInfo} style={formBlock}>
 							<div style={formInputContainer}>
-								<label htmlFor= "username">Ingrese su nombre de usuario</label>
+								<label htmlFor= "username">
+									Ingrese su nombre de usuario
+								</label>
 								<input type= "text" id= "username" placeholder= "Nombre de usuario" value= {this.state.username} onChange= {this.onInputInfo} className= {'user-input'}/>
 									
-								<label htmlFor= "password">Ingresar contraseña</label>
+								<label htmlFor= "password">
+									Ingresar contraseña
+								</label>
 								<input type= "password" id= "password" placeholder= "Contraseña" value= {this.state.password} onChange= {this.onInputInfo}  className= {'user-input'}/>
 							</div>
 

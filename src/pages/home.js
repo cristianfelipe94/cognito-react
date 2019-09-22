@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+
+// Auth is an object that has inside methods.
+// signIn, signOut Methods.
 import {Auth} from 'aws-amplify';
 
 import '../App.css';
@@ -12,9 +15,9 @@ class Home extends Component{
             userProfile: null
         }
 
-        this.getStorage = this.getStorage.bind(this);
         this.handleSignOut = this.handleSignOut.bind(this);
         this.goToPassword = this.goToPassword.bind(this);
+        // this.getStorage = this.getStorage.bind(this);
     }
 
     // ComponentWillMount:
@@ -41,9 +44,9 @@ class Home extends Component{
 
     // GetStorage:
     // Utility function.
-    getStorage() {
-        console.log(this.state);
-    }
+    // getStorage() {
+    //     console.log(this.state);
+    // }
 
     // HandleSignOut:
     // This function will Submit a Amplify process
@@ -54,6 +57,7 @@ class Home extends Component{
         // This is a method inside Auth, that takes one Boolean if TRUE deletes Tokens other sessions.
         Auth.signOut({ global: true })
         .then(() => {
+            // After response delete LocalStorage and Quit session.
             // console.log("Global setter: ", this.props.passTo.setAppDefaultState);
             this.props.passTo.setAppDefaultState(null);
             localStorage.removeItem('UserSession');
@@ -89,7 +93,7 @@ class Home extends Component{
 
         return (
             <div className="app-layout">
-                <h1 onClick= {this.getStorage}>
+                <h1>
                     Hola <span style= {username}>{this.state.isUserLogged ? this.state.username : ""}</span>
                 </h1>
                 <div>

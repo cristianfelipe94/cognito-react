@@ -8,7 +8,8 @@ class Home extends Component{
         super(props)
         this.state = {
             username: "",
-            isUserLogged: false
+            isUserLogged: false,
+            userProfile: null
         }
 
         this.getStorage = this.getStorage.bind(this);
@@ -22,8 +23,14 @@ class Home extends Component{
     componentWillMount () {
         const storedUser = JSON.parse(localStorage.getItem('UserSession'));
         if (storedUser) {
+            this.setState({
+                username: storedUser.username,
+                isUserLogged: true,
+                userProfile: storedUser
+            }, () => {
+                // console.log("State before mutation: ", this.state);
+            });
             // console.log('Something in localStorage: ', storedUser);
-            this.state = {username: storedUser.username, isUserLogged: true, storedUser};
         } else {
             // console.log('Not something in localStorage: ', storedUser);
             this.setState({
@@ -32,23 +39,31 @@ class Home extends Component{
         }
     }
 
+    // GetStorage:
+    // Utility function.
     getStorage() {
         console.log(this.state);
     }
 
+    // HandleSignOut:
+    // This function will Submit a Amplify process
     handleSignOut = async event => {
         event.preventDefault();
 
+        // Auth.signOut:
+        // This is a method inside Auth, that takes one Boolean if TRUE deletes Tokens other sessions.
         Auth.signOut({ global: true })
         .then(() => {
             // console.log("Global setter: ", this.props.passTo.setAppDefaultState);
             this.props.passTo.setAppDefaultState(null);
             localStorage.removeItem('UserSession');
-        }).catch(err => {
+        }).catch((err) => {
             console.log("Cognito error: ", err);
         });
     }
 
+    // GoToPassword:
+    // This will take the user to change the password.
     goToPassword() {
         this.props.history.push('/forgotpassword');
     }
@@ -57,12 +72,6 @@ class Home extends Component{
 
         const username = {
             color: '#05a697'
-        }
-
-        const formSubmitContainer = {
-            border: 'none',
-            width: '50%',
-            display: 'flex'
         }
 
         const navigationTab = {
@@ -81,7 +90,7 @@ class Home extends Component{
         return (
             <div className="app-layout">
                 <h1 onClick= {this.getStorage}>
-                    Hola <span style= {username}>{this.state.isUserLogged ? this.state.username : this.forceUpdate()}</span>
+                    Hola <span style= {username}>{this.state.isUserLogged ? this.state.username : ""}</span>
                 </h1>
                 <div>
                     <button onClick= {this.handleSignOut} style= {navigationTab}>

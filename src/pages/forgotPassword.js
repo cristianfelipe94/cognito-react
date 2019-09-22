@@ -11,7 +11,6 @@ class ForgotPassword extends Component {
 		super(props);
 		this.state = {
 			email: "",
-
             errorMessage: "",
             validated: false,
 			isLooged: this.props.passTo.user
@@ -45,13 +44,16 @@ class ForgotPassword extends Component {
 	}
 
 	// HandleSubmitedInfo:
-	// This function will Submit
+	// This function will Submit a Amplify process
 	handleSubmitedInfo = async event => {
 		event.preventDefault();
 
 		if (this.state.validated) {
 			// Use destructure to get values from state.
 			const { email} = this.state;
+
+			// Auth.forgotPassword:
+			// This is a method inside Auth that takes one value (email).
 			Auth.forgotPassword(email)
 				.then((data) => {
 					this.props.history.push("/verificationcode");
@@ -65,6 +67,8 @@ class ForgotPassword extends Component {
 		}
 	};
 
+	// GoToHome:
+	// This function will take the user to the Home page.
 	goToHome() {
 		this.props.history.push("/home");
 	}

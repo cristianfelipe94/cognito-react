@@ -106,7 +106,7 @@ class Home extends Component{
                     </button>
                 </div>
             </div>
-        )
+        );
     }
 }
 export default Home;

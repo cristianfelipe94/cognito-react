@@ -12,6 +12,9 @@ class Form extends Component {
 			password: "",
 			confirmpassword: "",
 
+			verificationCode: "",
+			newPassword: "",
+
 			errorMessage: "",
 			passedValidation: false,
 
@@ -29,6 +32,11 @@ class Form extends Component {
 
 		this.validationForgotPass = this.validationForgotPass.bind(this);
 		this.handleForgotPassword = this.handleForgotPassword.bind(this);
+
+		this.validationVerificationCode = this.validationVerificationCode.bind(
+			this
+		);
+		this.handleVerificationCode = this.handleVerificationCode.bind(this);
 	}
 
 	// OnInputInfo:
@@ -106,6 +114,35 @@ class Form extends Component {
 		}
 	}
 
+	// ConfirmationMatch:
+	//This function will make tests in the front before sending a request in the Back.
+	validationVerificationCode() {
+		if (this.state.newPassword !== "" && this.state.confirmedPassword !== "") {
+			if (
+				this.state.newPassword.length < 6 &&
+				this.state.confirmedPassword < 6
+			) {
+				this.setState({
+					errorMessage:
+						"Por seguridad las contraseñas tienen que ser mayores de 6 caracteres, tener al menos un número, una letra mayúscula y un caracter especial."
+				});
+			} else if (this.state.newPassword !== this.state.confirmedPassword) {
+				this.setState({
+					errorMessage: "Asegurese de confirmar la nueva contraseña."
+				});
+			} else {
+				// console.log("Passed validation: ",this.state.email," ",this.state.newPassword," ",this.state.confirmedPassword);
+				this.setState({
+					passedValidation: true
+				});
+			}
+		} else {
+			this.setState({
+				errorMessage: "Asegúrese de completar todos los campos."
+			});
+		}
+	}
+
 	// HandleSubmitedInfo:
 	// This function will Submit
 	handleSignUp = async event => {
@@ -127,7 +164,7 @@ class Form extends Component {
 				.then(userCreated => {
 					// console.log("Cognito response: ", userCreated);
 					this.props.passTo.setAppDefaultState(userCreated);
-					this.props.history.push("/welcome");
+					this.props.history.go("/welcome");
 				})
 				.catch(err => {
 					// console.log("Cognito error: ", err);
@@ -159,14 +196,13 @@ class Form extends Component {
                         logged: true,
                         userProfile: user
                     }
-                },() => {
-                    // console.log("Save response into State: ", this.state);
-                    this.props.passTo.setAppDefaultState(this.state.isLooged);
-                    localStorage.setItem("UserSession", JSON.stringify(this.state));
-                    this.props.history.push("/home");
-                    window.location.reload();
                 });
-            }).catch(err => {
+            }).then(() => {
+                // console.log("Save response into State: ", this.state);
+                this.props.passTo.setAppDefaultState(this.state.isLooged);
+                localStorage.setItem("UserSession", JSON.stringify(this.state));
+                this.props.history.go("/home");
+            }).catch((err) => {
                 // console.log("Response error: ",err.message);
                 this.setState({
                     errorMessage: err.message
@@ -186,19 +222,47 @@ class Form extends Component {
 
 			// Auth.forgotPassword:
 			// This is a method inside Auth that takes one value (email).
-			Auth.forgotPassword(email).then(data => {
-                this.props.history.push("/verificationcode");
-            }).catch(err => {
-                // console.log("Cognito error: ", err);
-                this.setState({
-                    errorMessage: err.message
-                });
-            });
+			Auth.forgotPassword(email)
+				.then(data => {
+					this.props.history.push("/verificationcode");
+				})
+				.catch(err => {
+					// console.log("Cognito error: ", err);
+					this.setState({
+						errorMessage: err.message
+					});
+				});
+		}
+	};
+
+	// HandleChangePass:
+	// This function will Submit
+	handleVerificationCode = async event => {
+		event.preventDefault();
+		// console.log("Password request in Cognito");
+		if (this.state.passedValidation) {
+			const { email, verificationCode, newPassword } = this.state;
+			// console.log("Destructure state: ", email, verificationCode, newPassword);
+
+			// Auth.forgotPasswordSubmit:
+			// This is a method inside Auth, that takes Email, VerificationCode and NewPassword.
+			Auth.forgotPasswordSubmit(email, verificationCode, newPassword)
+				.then(() => {
+					// After new password is created the session will be removed and user has to log in the Welcome page.
+					this.props.passTo.setAppDefaultState(null);
+					localStorage.clear();
+					this.props.history.push("/welcome");
+				})
+				.catch(err => {
+					// console.log("Not able to submit password: ", err);
+					this.setState({
+						errorMessage: err.message
+					});
+				});
 		}
 	};
 
 	render() {
-		console.log("Form props: ", this.props.type);
 		const formBlock = {
 			display: "flex",
 			flexDirection: "column",
@@ -334,6 +398,9 @@ class Form extends Component {
 		} else if (this.props.type === "forgotPassword") {
 			return (
 				<div>
+					<div style={errorMessageContainer}>
+						<p>{this.state.errorMessage}</p>
+					</div>
 					<form onSubmit={this.handleForgotPassword} style={formBlock}>
 						<div style={formInputContainer}>
 							<label htmlFor="email">Ingrese su correo</label>
@@ -350,6 +417,70 @@ class Form extends Component {
 						<div style={formSubmitContainer}>
 							<button onClick={this.validationForgotPass} style={submitInput}>
 								Generar código
+							</button>
+						</div>
+					</form>
+				</div>
+			);
+		} else if (this.props.type === "verificationCode") {
+			return (
+				<div>
+					<div style={errorMessageContainer}>
+						<p>{this.state.errorMessage}</p>
+					</div>
+					<form onSubmit={this.handleVerificationCode} style={formBlock}>
+						<div style={formInputContainer}>
+							<label htmlFor="email">Ingrese su correo electrónico</label>
+							<input
+								type="text"
+								id="email"
+								placeholder="Correo electrónico"
+								value={this.state.email}
+								onChange={this.onInputInfo}
+								className={"user-input"}
+							/>
+
+							<label htmlFor="verificationCode">
+								Ingrese su código de confirmación, que se encuentra en su correo
+								electrónico.
+							</label>
+							<input
+								type="number"
+								id="verificationCode"
+								placeholder="Código de confirmación "
+								value={this.state.verificationCode}
+								onChange={this.onInputInfo}
+								className={"user-input"}
+							/>
+
+							<label htmlFor="newPassword">Ingrese su nueva contraseña</label>
+							<input
+								type="password"
+								id="newPassword"
+								placeholder="Nueva contraseña"
+								value={this.state.newPassword}
+								onChange={this.onInputInfo}
+								className={"user-input"}
+							/>
+
+							<label htmlFor="confirmedPassword">
+								Vuelva a ingresar su nueva contraseña
+							</label>
+							<input
+								type="password"
+								id="confirmedPassword"
+								placeholder="Confirmar nueva contraseña"
+								value={this.state.confirmedPassword}
+								onChange={this.onInputInfo}
+								className={"user-input"}
+							/>
+						</div>
+						<div style={formSubmitContainer}>
+							<button
+								onClick={this.validationVerificationCode}
+								style={submitInput}
+							>
+								Cambiar de contraseña
 							</button>
 						</div>
 					</form>

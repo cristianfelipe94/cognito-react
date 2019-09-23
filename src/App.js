@@ -4,11 +4,11 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './App.css';
 
 // Import all pages.
-import Registration from './pages/Registration';
-import Welcome from './pages/Welcome';
-import Home from './pages/Home';
-import ForgotPassword from './pages/ForgotPassword';
-import VerificationCode from './pages/VerificationCode';
+import Registration from './pages/registration';
+import Welcome from './pages/welcome';
+import Home from './pages/home';
+import ForgotPassword from './pages/forgotPassword';
+import VerificationCode from './pages/verificationCode';
 
 class App extends Component {
   constructor(props) {

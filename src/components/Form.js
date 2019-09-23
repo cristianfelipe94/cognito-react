@@ -210,7 +210,7 @@ class Form extends Component {
 		if(this.state.isLooged.logged) {
 			this.props.passTo.setAppDefaultState(this.state.isLooged);
 			localStorage.setItem("UserSession", JSON.stringify(this.state));
-			this.props.history.push("/home");
+			this.props.history.push("/");
 			window.location.reload();
 		};
 	}

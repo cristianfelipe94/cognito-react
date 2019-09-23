@@ -24,7 +24,7 @@ class Home extends Component{
     // ComponentWillMount:
     // Is the First Render process made by React.
     // This function will load data and set it as State.
-    componentWillMount () {
+    componentDidMount () {
         const storedUser = JSON.parse(localStorage.getItem('UserSession'));
         if (storedUser) {
             this.setState({

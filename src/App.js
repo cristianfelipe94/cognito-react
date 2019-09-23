@@ -58,9 +58,10 @@ class App extends Component {
         return(
           <Router history={history}>
             <Switch>
-              <Route exact path="/home" render={(props)=> <Home {...props} passTo={appProps}/>}/>
               <Route exact path="/" render={(props) => <Home {...props} passTo={appProps}/>}/>
+              <Route exact path="/home" render={(props)=> <Home {...props} passTo={appProps}/>}/>
               <Route exact path="/welcome" render={(props) => <Home {...props} passTo={appProps}/>}/>
+              <Route exact path="/security" render={(props) => <Home {...props} passTo={appProps}/>}/>
               <Route exact path="/forgotpassword" render={(props) => <ForgotPassword {...props} passTo={appProps}/>}/>
               <Route exact path="/verificationcode" render={(props) => <VerificationCode {...props} passTo={appProps}/>}/>
             </Switch>
@@ -70,8 +71,8 @@ class App extends Component {
         return(
           <Router history={history}>
             <Switch>
-              <Route exact path="/home" render={(props)=> <Welcome {...props} passTo={appProps}/>}/>
               <Route exact path="/" render={(props) => <Registration {...props} passTo={appProps}/>}/>
+              <Route exact path="/home" render={(props)=> <Welcome {...props} passTo={appProps}/>}/>
               <Route exact path="/welcome" render={(props) => <Welcome {...props} passTo={appProps}/>}/>
               <Route exact path="/security" render={(props) => <Welcome {...props} passTo={appProps}/>}/>
               <Route exact path="/forgotpassword" render={(props) => <Welcome {...props} passTo={appProps}/>}/>
@@ -85,8 +86,8 @@ class App extends Component {
         <Router history={history}>
           <Switch>
             <Route exact path="/" render={(props) => <Registration {...props} passTo={appProps}/>}/>
-            <Route exact path="/welcome" render={(props) => <Welcome {...props} passTo={appProps}/>}/>
             <Route exact path="/home" render={(props)=> <Registration {...props} passTo={appProps}/>}/>
+            <Route exact path="/welcome" render={(props) => <Welcome {...props} passTo={appProps}/>}/>
             <Route exact path="/security" render={(props) => <Registration {...props} passTo={appProps}/>}/>
             <Route exact path="/forgotpassword" render={(props) => <Registration {...props} passTo={appProps}/>}/>
             <Route exact path="/verificationcode" render={(props) => <Registration {...props} passTo={appProps}/>}/>

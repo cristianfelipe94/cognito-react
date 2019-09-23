@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import Form from "../components/Form";
 
 import "../App.css";
+import "../index.css"
 
 class ForgotPassword extends Component {
 	constructor(props) {
@@ -22,32 +23,16 @@ class ForgotPassword extends Component {
 	}
 
 	render() {
-		
-		const appTitles = {
-			maxWidth: "80%"
-		};
-
-		const enterHome = {
-			border: "none",
-			fontSize: "16px",
-			color: "white",
-			margin: "auto",
-			padding: "10px",
-			backgroundColor: "rgb(59, 59, 59)",
-			fontFamily: "Roboto",
-			width: "max-content",
-			cursor: "pointer"
-		};
 
 		return (
 			<div className="app-layout">
 				<div>
-					<div style={appTitles}>
-						<h1 style={{ fontWeight: "300" }}>
+					<div className="app-layout-titles">
+						<h1>
 							Código de verificación
 						</h1>
 
-						<h2 style={{ fontWeight: "300" }}>
+						<h2>
 							Ingresa tu correo para confirmar la cuenta.
 						</h2>
 					</div>
@@ -55,7 +40,7 @@ class ForgotPassword extends Component {
 				</div>
 
 				<div>
-					<button onClick={this.goToHome} style={enterHome}>
+					<button onClick={this.goToHome} className="nav-btn">
 						Volver al perfil
 					</button>
 				</div>

@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import Form from "../components/Form";
 
 import "../App.css";
+import "../index.css"
 
 class Registration extends Component {
 	constructor(props) {
@@ -23,29 +24,14 @@ class Registration extends Component {
 	}
 
 	render() {
-		const appTitles = {
-			maxWidth: "80%"
-		};
-
-		const enterHome = {
-			border: "none",
-			fontSize: "16px",
-			color: "white",
-			margin: "auto",
-			padding: "10px",
-			backgroundColor: "rgb(59, 59, 59)",
-			fontFamily: "Roboto",
-			width: "max-content",
-			cursor: "pointer"
-		};
 
 		return (
 			<div className="app-layout">
 				<div>
-					<div style={appTitles}>
-						<h1 style={{ fontWeight: "300" }}>Atana</h1>
+					<div className="app-layout-titles">
+						<h1>Atana</h1>
 
-						<h2 style={{ fontWeight: "300" }}>
+						<h2>
 							Tus ideas deben ser comunicadas.
 						</h2>
 					</div>
@@ -53,7 +39,7 @@ class Registration extends Component {
 				</div>
 
 				<div>
-					<button onClick={this.goToLogin} style={enterHome}>
+					<button onClick={this.goToLogin} className="nav-btn">
 						Ya soy usuario
 					</button>
 				</div>

@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import Form from "../components/Form";
 
 import "../App.css";
+import "../index.css"
 
 class VerificationCode extends Component {
 	constructor(props) {
@@ -23,31 +24,15 @@ class VerificationCode extends Component {
 
 	render() {
 
-		const enterHome = {
-			border: "none",
-			fontSize: "16px",
-			color: "white",
-			margin: "auto",
-			padding: "10px",
-			backgroundColor: "rgb(59, 59, 59)",
-			fontFamily: "Roboto",
-			width: "max-content",
-			cursor: "pointer"
-        };
-        
-        const layoutBlock = {
-			width: '80%'
-		}
-
 		return (
 			<div className="app-layout">
-				<div style={layoutBlock}>
+				<div className="app-layout-titles">
 					<h1>Ingresa la información para completar el proceso.</h1>
 
                     <Form {...this.props} type= {this.state.formType} />
 				</div>
 				<div>
-					<button onClick={this.goToHome} style={enterHome}>
+					<button onClick={this.goToHome} className="nav-btn">
 						Volver al perfil
 					</button>
 				</div>

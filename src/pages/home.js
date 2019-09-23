@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import {Auth} from 'aws-amplify';
 
 import '../App.css';
+import "../index.css"
 
 class Home extends Component{
     constructor(props) {
@@ -78,30 +79,17 @@ class Home extends Component{
             color: '#05a697'
         }
 
-        const navigationTab = {
-            border: 'none',
-            fontSize: '16px',
-            color: 'white',
-            margin: '10px auto',
-            padding: '10px',
-            backgroundColor: 'rgb(59, 59, 59)',
-            fontFamily: 'Roboto',
-            width: 'max-content',
-            cursor: 'pointer',
-            display: 'block'
-        }
-
         return (
             <div className="app-layout">
                 <h1>
                     Hola <span style= {username}>{this.state.isUserLogged ? this.state.username : ""}</span>
                 </h1>
                 <div>
-                    <button onClick= {this.handleSignOut} style= {navigationTab}>
+                    <button onClick= {this.handleSignOut} className={"nav-btn"}>
                         Salir de la aplicación
                     </button>
 
-                    <button onClick= {this.goToPassword} style= {navigationTab}>
+                    <button onClick= {this.goToPassword} className={"nav-btn"}>
                         Olvidé la contraseña
                     </button>
                 </div>

@@ -21,6 +21,20 @@
   padding: 20px 0px 10px;
 }
 
-label {
-  font-size: 22px;
+.nav-btn {
+  border: none;
+  font-size: 16px;
+  color: white;
+  margin: 10px auto;
+  padding: 10px;
+  background-color: rgb(59, 59, 59);
+  font-family: Roboto;
+  width: max-content;
+  cursor: pointer;
+  display: block;
 }
+
+.app-layout-titles {
+  max-width: 70%;
+}
+

@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import Form from "../components/Form";
 
 import "../App.css";
+import "../index.css"
 
 class Welcome extends Component {
 	constructor(props) {
@@ -26,43 +27,18 @@ class Welcome extends Component {
 
 	render() {
 
-		const welcomeTitle = {
-			margin: "20px 0",
-			fontWeight: "300"
-		};
-
-		const layoutBlock = {
-			width: '80%'
-		}
-
-		const confirmationAdvice = {
-			margin: "20px 0"
-		};
-
-		const enterWelcome = {
-			border: 'none',
-			fontSize: '16px',
-			color: 'white',
-			margin: 'auto',
-			padding: '10px',
-			backgroundColor: 'rgb(59, 59, 59)',
-			fontFamily: 'Roboto',
-			width: 'max-content',
-			cursor: 'pointer'
-		}
-
 		// Check if user is looged.
 		// True or Something: Will render a page in which the user has started a Registration process.
 		// Null: Will render a page in which the user is new with no registration process and user info.
 		if (this.state.isLooged.logged !== null) {
 			return (
 				<div className="app-layout">
-					<div style= {layoutBlock}>
+					<div className="app-layout-titles">
 
-						<h1 style={welcomeTitle}>
+						<h1>
 							Hola, ya casi termina el proceso de registro
 						</h1>
-						<p style={confirmationAdvice}>
+						<p>
 							Acabamos de enviarte un correo de confirmación a tu correo
 							electrónico.
 						</p>
@@ -71,7 +47,7 @@ class Welcome extends Component {
 					</div>
 					
 					<div>
-						<button onClick= {this.goToSignUp} style= {enterWelcome}>
+						<button onClick= {this.goToSignUp} className="nav-btn">
 							Ir al Registro
 						</button>
 					</div>
@@ -80,18 +56,18 @@ class Welcome extends Component {
 		} else {
 			return (
 				<div className="app-layout">
-					<div style= {layoutBlock}>
-						<h2 style={welcomeTitle}>
+					<div className="app-layout-titles">
+						<h2>
 							Ingreso
 						</h2>
 
-						<p style={confirmationAdvice}>
+						<p>
 							Te invitamos a abrir tu perfil.
 						</p>
 						<Form {...this.props} type= {this.state.formType}/>
 					</div>
 					<div>
-						<button onClick= {this.goToSignUp} style= {enterWelcome}>
+						<button onClick= {this.goToSignUp} className="nav-btn">
 							Ir al Registro
 						</button>
 					</div>

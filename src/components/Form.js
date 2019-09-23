@@ -33,9 +33,7 @@ class Form extends Component {
 		this.validationForgotPass = this.validationForgotPass.bind(this);
 		this.handleForgotPassword = this.handleForgotPassword.bind(this);
 
-		this.validationVerificationCode = this.validationVerificationCode.bind(
-			this
-		);
+		this.validationVerificationCode = this.validationVerificationCode.bind(this);
 		this.handleVerificationCode = this.handleVerificationCode.bind(this);
 	}
 
@@ -164,7 +162,7 @@ class Form extends Component {
 				.then(userCreated => {
 					// console.log("Cognito response: ", userCreated);
 					this.props.passTo.setAppDefaultState(userCreated);
-					this.props.history.go("/welcome");
+					this.props.history.push("/welcome");
 				})
 				.catch(err => {
 					// console.log("Cognito error: ", err);
@@ -196,13 +194,13 @@ class Form extends Component {
                         logged: true,
                         userProfile: user
                     }
-                });
-            }).then(() => {
-                // console.log("Save response into State: ", this.state);
-                this.props.passTo.setAppDefaultState(this.state.isLooged);
-                localStorage.setItem("UserSession", JSON.stringify(this.state));
-                this.props.history.go("/home");
-            }).catch((err) => {
+				});
+			}).then(() => {
+				this.props.passTo.setAppDefaultState(this.state.isLooged);
+				localStorage.setItem("UserSession", JSON.stringify(this.state));
+				this.props.history.push("/home");
+				window.location.reload();
+			}).catch((err) => {
                 // console.log("Response error: ",err.message);
                 this.setState({
                     errorMessage: err.message

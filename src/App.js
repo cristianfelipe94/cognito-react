@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {Router, Route, Switch} from 'react-router-dom';
+
+import {createBrowserHistory} from "history";
 
 import './App.css';
 
@@ -10,6 +12,8 @@ import Home from './pages/home';
 import ForgotPassword from './pages/forgotPassword';
 import VerificationCode from './pages/verificationCode';
 
+const history = createBrowserHistory();
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +21,7 @@ class App extends Component {
       user: null
     };
 
-    this.appDefaultState= this.appDefaultState.bind(this);
+    this.appDefaultState = this.appDefaultState.bind(this);
   }
 
   // AppDefaulState:
@@ -41,7 +45,6 @@ class App extends Component {
   }
 
   render() {
-
     // Create a prop that contains the State.
     const appProps = {
       user: this.state.user,
@@ -53,7 +56,7 @@ class App extends Component {
     if(this.state.user) {
       if(this.state.user.username) {
         return(
-          <Router>
+          <Router history={history}>
             <Switch>
               <Route exact path="/home" render={(props)=> <Home {...props} passTo={appProps}/>}/>
               <Route exact path="/" render={(props) => <Home {...props} passTo={appProps}/>}/>
@@ -65,7 +68,7 @@ class App extends Component {
         );
       } else {
         return(
-          <Router>
+          <Router history={history}>
             <Switch>
               <Route exact path="/home" render={(props)=> <Welcome {...props} passTo={appProps}/>}/>
               <Route exact path="/" render={(props) => <Registration {...props} passTo={appProps}/>}/>
@@ -79,7 +82,7 @@ class App extends Component {
       }
     } else {
       return (
-        <Router>
+        <Router history={history}>
           <Switch>
             <Route exact path="/" render={(props) => <Registration {...props} passTo={appProps}/>}/>
             <Route exact path="/welcome" render={(props) => <Welcome {...props} passTo={appProps}/>}/>

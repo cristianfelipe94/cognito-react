@@ -2,6 +2,11 @@ import React, { Component } from "react";
 
 import { Auth } from "aws-amplify";
 
+const cognitoErrorsRegex = {
+	whitespace: /\s+/g,
+	validationError: /\b(\w*validation errors detected\w*)\b/g
+}
+
 class Form extends Component {
 	constructor(props) {
 		super(props);
@@ -66,9 +71,14 @@ class Form extends Component {
 					errorMessage:
 						"La contraseña y la confirmación tienen que ser iguales. Asegúrese de estar ingresando la contraseña correcta."
 				});
+			} else if (cognitoErrorsRegex.whitespace.test(this.state.username) || cognitoErrorsRegex.whitespace.test(this.state.email)) {
+				this.setState({
+					errorMessage: "El nombre de usuario y correo no deben contener espacios en blanco. Vuelva a intentarlo."
+				});
 			} else {
 				this.setState({
-					passedValidation: true
+					passedValidation: true,
+					errorMessage: ""
 				});
 			}
 		} else {
@@ -84,12 +94,16 @@ class Form extends Component {
 		if (this.state.password !== "" && this.state.username !== "") {
 			if (this.state.password.length < 6) {
 				this.setState({
-					errorMessage:
-						"Por seguridad las contraseñas tienen que ser mayores de 6 caracteres, tener al menos un número, una letra mayúscula y un caracter especial."
+					errorMessage: "Por seguridad las contraseñas tienen que ser mayores de 6 caracteres, tener al menos un número, una letra mayúscula y un caracter especial."
+				});
+			} else if (cognitoErrorsRegex.whitespace.test(this.state.username)) {
+				this.setState({
+					errorMessage: "El nombre de usuario no debe contener espacios en blanco. Vuelva a intentarlo."
 				});
 			} else {
 				this.setState({
-					passedValidation: true
+					passedValidation: true,
+					errorMessage: ""
 				});
 			}
 		} else {
@@ -103,9 +117,16 @@ class Form extends Component {
 	//This function will make tests in the front before sending a request in the Back.
 	validationForgotPass() {
 		if (this.state.email !== "") {
-			this.setState({
-				passedValidation: true
-			});
+			if (cognitoErrorsRegex.whitespace.test(this.state.email)) {
+				this.setState({
+					errorMessage: "El correo no debe contener espacios en blanco. Vuelva a intentarlo."
+				});
+			} else {
+				this.setState({
+					passedValidation: true,
+					errorMessage: ""
+				});
+			};
 		} else {
 			this.setState({
 				errorMessage: "Asegúrese de completar todos los campos."
@@ -117,22 +138,23 @@ class Form extends Component {
 	//This function will make tests in the front before sending a request in the Back.
 	validationVerificationCode() {
 		if (this.state.newPassword !== "" && this.state.confirmedPassword !== "") {
-			if (
-				this.state.newPassword.length < 6 &&
-				this.state.confirmedPassword < 6
-			) {
+			if (this.state.newPassword.length < 6 && this.state.confirmedPassword < 6) {
 				this.setState({
-					errorMessage:
-						"Por seguridad las contraseñas tienen que ser mayores de 6 caracteres, tener al menos un número, una letra mayúscula y un caracter especial."
+					errorMessage: "Por seguridad las contraseñas tienen que ser mayores de 6 caracteres, tener al menos un número, una letra mayúscula y un caracter especial."
 				});
 			} else if (this.state.newPassword !== this.state.confirmedPassword) {
 				this.setState({
 					errorMessage: "Asegurese de confirmar la nueva contraseña."
 				});
+			}  else if (cognitoErrorsRegex.whitespace.test(this.state.email) || cognitoErrorsRegex.whitespace.test(this.state.verificationCode)) {
+				this.setState({
+					errorMessage: "El correo y el código de verificación no deben contener espacios en blanco. Vuelva a intentarlo."
+				});
 			} else {
 				// console.log("Passed validation: ",this.state.email," ",this.state.newPassword," ",this.state.confirmedPassword);
 				this.setState({
-					passedValidation: true
+					passedValidation: true,
+					errorMessage: ""
 				});
 			}
 		} else {
@@ -141,7 +163,7 @@ class Form extends Component {
 			});
 		}
 	}
-
+	
 	// HandleSubmitedInfo:
 	// This function will Submit
 	handleSignUp = async event => {
@@ -166,10 +188,16 @@ class Form extends Component {
 					this.props.history.push("/welcome");
 				})
 				.catch(err => {
-					// console.log("Cognito error: ", err);
-					this.setState({
-						errorMessage: err.message
-					});
+					// console.log("Cognito error: ", cognitoErrors);
+					if (cognitoErrorsRegex.validationError.test(err.message)) {
+						this.setState({
+							errorMessage: "El nombre de usuario y el correo no deben contener espacios en blanco. Vuelva a intentarlo."
+						});
+					} else {
+						this.setState({
+							errorMessage: err.message
+						});
+					}
 				});
 		}
 	};
@@ -178,6 +206,7 @@ class Form extends Component {
 	// This function will Submit
 	handleSignIn = async event => {
 		event.preventDefault();
+
 		if (this.state.passedValidation) {
 			const { username, password } = this.state;
 			// console.log("Destructure state: ", username, password);
@@ -197,10 +226,16 @@ class Form extends Component {
                     }
 				});
 			}).catch((err) => {
-                // console.log("Response error: ",err.message);
-                this.setState({
-                    errorMessage: err.message
-                });
+				// console.log("Cognito error: ", cognitoErrors);
+				if (cognitoErrorsRegex.validationError.test(err.message)) {
+					this.setState({
+						errorMessage: "El nombre de usuario no debe contener espacios en blanco. Vuelva a intentarlo."
+					});
+				} else {
+					this.setState({
+						errorMessage: err.message
+					});
+				}
 			});
 			this.goToHome();
 		}
@@ -231,10 +266,16 @@ class Form extends Component {
 					this.props.history.push("/verificationcode");
 				})
 				.catch(err => {
-					// console.log("Cognito error: ", err);
-					this.setState({
-						errorMessage: err.message
-					});
+					// console.log("Cognito error: ", cognitoErrors);
+					if (cognitoErrorsRegex.validationError.test(err.message)) {
+						this.setState({
+							errorMessage: "El correo no debe contener espacios en blanco. Vuelva a intentarlo."
+						});
+					} else {
+						this.setState({
+							errorMessage: err.message
+						});
+					}
 				});
 		}
 	};
@@ -243,6 +284,7 @@ class Form extends Component {
 	// This function will Submit
 	handleVerificationCode = async event => {
 		event.preventDefault();
+
 		// console.log("Password request in Cognito");
 		if (this.state.passedValidation) {
 			const { email, verificationCode, newPassword } = this.state;
@@ -258,10 +300,16 @@ class Form extends Component {
 					this.props.history.push("/welcome");
 				})
 				.catch(err => {
-					// console.log("Not able to submit password: ", err);
-					this.setState({
-						errorMessage: err.message
-					});
+					// console.log("Cognito error: ", cognitoErrors);
+					if (cognitoErrorsRegex.validationError.test(err.message)) {
+						this.setState({
+							errorMessage: "El nombre de usuario y el código de verificación no deben contener espacios en blanco. Vuelva a intentarlo."
+						});
+					} else {
+						this.setState({
+							errorMessage: err.message
+						});
+					}
 				});
 		}
 	};

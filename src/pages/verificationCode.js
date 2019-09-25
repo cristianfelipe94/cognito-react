@@ -19,7 +19,7 @@ class VerificationCode extends Component {
 	// GoToHome:
 	// This function will take the user to the Home page.
 	goToHome() {
-		this.props.history.push("/home");
+		this.props.history.push("/");
 	}
 
 	render() {

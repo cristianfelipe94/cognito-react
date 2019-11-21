@@ -1,0 +1,22 @@
+backend:
+  name: git-gateway
+  branch: master
+  commit_messages:
+    create: 'Create {{collection}}'
+    update: 'Update {{collection}}'
+    delete: 'Delete {{collection}}'
+
+media_folder: static/image
+public_folder: /image
+
+collections:
+  - name: "index"
+    label: "Átana"
+    files:
+      - file: "src/pages/index.md"
+        label: "Landing Page"
+        name: "index"
+        fields:
+          - {label: "Template Key", name: "templateKey", widget: "hidden", default: "index-page"}
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Mainpitch",name: "mainpitch", widget: object, fields: [{label: "Image", name: "image", widget: "img"}, {label: "Text", name: "text", widget: "text"}, {label: "Text", name: "text", widget: "text"}, {label: "Text", name: "text", widget: "text"}]}

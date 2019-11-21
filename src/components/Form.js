@@ -40,7 +40,7 @@ class Form extends Component {
 
 		this.validationVerificationCode = this.validationVerificationCode.bind(this);
 		this.handleVerificationCode = this.handleVerificationCode.bind(this);
-		this.goToHome = this.goToHome.bind(this);
+		// this.goToHome = this.goToHome.bind(this);
 	}
 
 	// OnInputInfo:
@@ -179,7 +179,7 @@ class Form extends Component {
 				username,
 				password,
 				attributes: {
-					email: email
+					email
 				}
 			})
 				.then(userCreated => {
@@ -237,18 +237,9 @@ class Form extends Component {
 					});
 				}
 			});
-			this.goToHome();
+			// this.goToHome();
 		}
 	};
-
-	goToHome = async event => {
-		if(this.state.isLooged.logged) {
-			this.props.passTo.setAppDefaultState(this.state.isLooged);
-			localStorage.setItem("UserSession", JSON.stringify(this.state));
-			this.props.history.push("/");
-			window.location.reload();
-		};
-	}
 
 	// HandleSubmitedInfo:
 	// This function will Submit a Amplify process

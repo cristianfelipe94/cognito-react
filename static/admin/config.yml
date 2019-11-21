@@ -6,12 +6,12 @@ backend:
     update: 'Update {{collection}}'
     delete: 'Delete {{collection}}'
 
-media_folder: static/image
-public_folder: /image
+media_folder: "static/uploads"
+public_folder: "uploads"
 
 collections:
-  - name: "index"
-    label: "Átana"
+  - name: "pages"
+    label: "Pages"
     files:
       - file: "src/pages/index.md"
         label: "Landing Page"
